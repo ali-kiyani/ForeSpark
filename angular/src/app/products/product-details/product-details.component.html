@@ -1,0 +1,47 @@
+<abp-modal-header [title]="l('ProductDetails', product.name)" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+<div class="modal-body">
+    <tabset>
+        <tab [heading]="'Images' | localize" class="pt-3 px-2">
+            <div class="container">
+                <div class="row" *ngIf="loaded==true">
+                  <div class="col-md-4" *ngFor="let image of productDetails.images">
+                    <div class="thumbnail">
+                      <a [href]="image" target="_blank">
+                        <img src="{{productImageUrl+product.id+'/'+image}}" alt="Lights" class="img-rounded set-img">
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </tab>
+        <tab [heading]="'StorageDetails' | localize" class="pt-3 px-2">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                          <th>{{"WarehouseName" | localize}}</th>
+                          <th>{{"StockSold" | localize}}</th>
+                          <th>{{"TotalStock" | localize}}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let productDetail of productDetails.warehouseProductsDetails">
+                          <td>{{ productDetail.warehouse.name }}</td>
+                          <td>{{ productDetail.soldStock }}</td>
+                          <td>{{ productDetail.totalStock }}</td>
+                        </tr>
+                      </tbody>
+                </table>
+              </div>
+        </tab>
+    </tabset>
+</div>
+<div class="modal-footer justify-content-between">
+    <button
+      type="button"
+      class="btn btn-default"
+      (click)="bsModalRef.hide()"
+    >
+      {{ "Close" | localize }}
+    </button>
+</div>
