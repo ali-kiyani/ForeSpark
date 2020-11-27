@@ -63,18 +63,38 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
         'Pages.Roles'
       ),
       new MenuItem(
-        this.l('Products'),
-        '/app/products',
+        this.l('Requests'),
+        '',
         'fab fa-product-hunt',
-        'Pages.Products'
+        'Pages.Requests',
+        [
+          new MenuItem(
+            this.l('Pending'),
+            '/app/requests/pending',
+            'fab fa-product-hunt',
+            'Pages.Requests'
+          ),
+          new MenuItem(
+            this.l('Approved'),
+            '/app/requests/approved',
+            'fab fa-product-hunt',
+            'Pages.Requests'
+          ),
+          new MenuItem(
+            this.l('Declined'),
+            '/app/requests/declined',
+            'fab fa-product-hunt',
+            'Pages.Requests'
+          )
+        ]
       ),
       new MenuItem(
-        this.l('Warehouse'),
-        '/app/warehouse',
-        'fas fa-warehouse',
-        'Pages.Warehouse'
+        this.l('Installations'),
+        '/app/installations',
+        'fa fa-camera',
+        'Pages.Installations'
       )
-      
+
       /*,
       new MenuItem(this.l('About'), '/app/about', 'fas fa-info-circle'),
       new MenuItem(this.l('MultiLevelMenu'), '', 'fas fa-circle', '', [

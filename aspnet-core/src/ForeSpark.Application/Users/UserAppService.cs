@@ -60,6 +60,7 @@ namespace ForeSpark.Users
 
             user.TenantId = AbpSession.TenantId;
             user.IsEmailConfirmed = true;
+            user.CNIC = input.CNIC;
 
             await _userManager.InitializeOptionsAsync(AbpSession.TenantId);
 

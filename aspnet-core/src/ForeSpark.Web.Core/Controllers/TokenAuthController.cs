@@ -141,7 +141,8 @@ namespace ForeSpark.Controllers
                 externalUser.EmailAddress,
                 externalUser.EmailAddress,
                 Authorization.Users.User.CreateRandomPassword(),
-                true
+                true,
+                externalUser.CNIC
             );
 
             user.Logins = new List<UserLogin>

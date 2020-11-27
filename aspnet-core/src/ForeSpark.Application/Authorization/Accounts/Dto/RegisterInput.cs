@@ -31,6 +31,11 @@ namespace ForeSpark.Authorization.Accounts.Dto
         [DisableAuditing]
         public string Password { get; set; }
 
+        [Required]
+        [StringLength(13)]
+        [DisableAuditing]
+        public string CNIC { get; set; }
+
         [DisableAuditing]
         public string CaptchaResponse { get; set; }
 

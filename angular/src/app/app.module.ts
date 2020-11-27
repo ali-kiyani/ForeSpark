@@ -38,15 +38,16 @@ import { SidebarComponent } from './layout/sidebar.component';
 import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
-import { ProductsComponent } from './products/products.component';
-import { WarehouseComponent } from './warehouse/warehouse.component';
-import { CreateProductComponent } from './products/create-product/create-product.component';
-import { EditProductComponent } from './products/edit-product/edit-product.component';
-import { CreateWarehouseComponent } from './warehouse/create-warehouse/create-warehouse.component';
-import { EditWarehouseComponent } from './warehouse/edit-warehouse/edit-warehouse.component';
-import { AuthShopifyComponent } from './auth-shopify/auth-shopify.component';
-import { CallbackShopifyComponent } from './callback-shopify/callback-shopify.component';
-import { ProductDetailsComponent } from './products/product-details/product-details.component';
+import { RequestsComponent } from './requests/requests.component';
+import { CreateRequestComponent } from './requests/create-request/create-request.component';
+import { EditRequestComponent } from './requests/edit-request/edit-request.component';
+import { RequestDetailsComponent } from './requests/request-details/request-details.component';
+import { MapComponent } from './map/map.component';
+import { AgmCoreModule } from '@agm/core';
+import { InstallationsComponent } from './installations/installations.component';
+import { CreateInstallationComponent } from './installations/create-installation/create-installation.component';
+import { EditInstallationComponent } from './installations/edit-installation/edit-installation.component';
+import { ViewInMapComponent } from './installations/view-in-map/view-in-map.component';
 
 @NgModule({
   declarations: [
@@ -77,17 +78,20 @@ import { ProductDetailsComponent } from './products/product-details/product-deta
     SidebarLogoComponent,
     SidebarUserPanelComponent,
     SidebarMenuComponent,
-    ProductsComponent,
-    WarehouseComponent,
-    CreateProductComponent,
-    EditProductComponent,
-    CreateWarehouseComponent,
-    EditWarehouseComponent,
-    AuthShopifyComponent,
-    CallbackShopifyComponent,
-    ProductDetailsComponent
+    RequestsComponent,
+    CreateRequestComponent,
+    EditRequestComponent,
+    RequestDetailsComponent,
+    MapComponent,
+    InstallationsComponent,
+    CreateInstallationComponent,
+    EditInstallationComponent,
+    ViewInMapComponent
   ],
   imports: [
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyB4MVTiaMpVu-Sedv-8XL491Y-3eqWo2GI'
+    }),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -114,11 +118,13 @@ import { ProductDetailsComponent } from './products/product-details/product-deta
     CreateUserDialogComponent,
     EditUserDialogComponent,
     ResetPasswordDialogComponent,
-    CreateProductComponent,
-    EditProductComponent,
-    CreateWarehouseComponent,
-    EditWarehouseComponent,
-    ProductDetailsComponent
+    CreateRequestComponent,
+    EditRequestComponent,
+    RequestDetailsComponent,
+    MapComponent,
+    CreateInstallationComponent,
+    EditInstallationComponent,
+    ViewInMapComponent
   ],
 })
 export class AppModule {}

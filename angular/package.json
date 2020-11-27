@@ -13,6 +13,7 @@
     "test": "ng test"
   },
   "dependencies": {
+    "@agm/core": "^1.1.0",
     "@angular/animations": "^9.1.4",
     "@angular/common": "^9.1.4",
     "@angular/compiler": "^9.1.4",
@@ -23,6 +24,7 @@
     "@angular/router": "^9.1.4",
     "@aspnet/signalr": "^1.1.4",
     "@fortawesome/fontawesome-free": "^5.13.0",
+    "@types/jquery": "^3.5.4",
     "abp-ng2-module": "^6.0.0",
     "abp-web-resources": "^5.1.1",
     "admin-lte-css-only": "^3.0.4",
@@ -61,7 +63,7 @@
     "karma-coverage-istanbul-reporter": "^3.0.0",
     "karma-jasmine": "^3.1.1",
     "karma-jasmine-html-reporter": "^1.4.0",
-    "nswag": "^13.4.2",
+    "nswag": "^13.9.3",
     "protractor": "^5.4.4",
     "ts-node": "^8.10.1",
     "tslint": "^6.1.2",

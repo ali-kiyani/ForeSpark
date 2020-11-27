@@ -37,7 +37,7 @@ namespace ForeSpark.Authorization.Users
             AbpSession = NullAbpSession.Instance;
         }
 
-        public async Task<User> RegisterAsync(string name, string surname, string emailAddress, string userName, string plainPassword, bool isEmailConfirmed)
+        public async Task<User> RegisterAsync(string name, string surname, string emailAddress, string userName, string plainPassword, bool isEmailConfirmed, string cnic)
         {
             CheckForTenant();
 
@@ -52,6 +52,7 @@ namespace ForeSpark.Authorization.Users
                 IsActive = true,
                 UserName = userName,
                 IsEmailConfirmed = isEmailConfirmed,
+                CNIC = cnic,
                 Roles = new List<UserRole>()
             };
 

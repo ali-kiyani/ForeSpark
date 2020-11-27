@@ -15,7 +15,7 @@ namespace ForeSpark.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.5")
+                .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -611,66 +611,14 @@ namespace ForeSpark.Migrations
                     b.ToTable("AbpSettings");
                 });
 
-            modelBuilder.Entity("Abp.DynamicEntityParameters.DynamicParameter", b =>
+            modelBuilder.Entity("Abp.DynamicEntityProperties.DynamicEntityProperty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("InputType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ParameterName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Permission")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TenantId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParameterName", "TenantId")
-                        .IsUnique()
-                        .HasFilter("[ParameterName] IS NOT NULL AND [TenantId] IS NOT NULL");
-
-                    b.ToTable("AbpDynamicParameters");
-                });
-
-            modelBuilder.Entity("Abp.DynamicEntityParameters.DynamicParameterValue", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DynamicParameterId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TenantId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DynamicParameterId");
-
-                    b.ToTable("AbpDynamicParameterValues");
-                });
-
-            modelBuilder.Entity("Abp.DynamicEntityParameters.EntityDynamicParameter", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DynamicParameterId")
+                    b.Property<int>("DynamicPropertyId")
                         .HasColumnType("int");
 
                     b.Property<string>("EntityFullName")
@@ -681,23 +629,23 @@ namespace ForeSpark.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DynamicParameterId");
+                    b.HasIndex("DynamicPropertyId");
 
-                    b.HasIndex("EntityFullName", "DynamicParameterId", "TenantId")
+                    b.HasIndex("EntityFullName", "DynamicPropertyId", "TenantId")
                         .IsUnique()
                         .HasFilter("[EntityFullName] IS NOT NULL AND [TenantId] IS NOT NULL");
 
-                    b.ToTable("AbpEntityDynamicParameters");
+                    b.ToTable("AbpDynamicEntityProperties");
                 });
 
-            modelBuilder.Entity("Abp.DynamicEntityParameters.EntityDynamicParameterValue", b =>
+            modelBuilder.Entity("Abp.DynamicEntityProperties.DynamicEntityPropertyValue", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("EntityDynamicParameterId")
+                    b.Property<int>("DynamicEntityPropertyId")
                         .HasColumnType("int");
 
                     b.Property<string>("EntityId")
@@ -712,9 +660,64 @@ namespace ForeSpark.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EntityDynamicParameterId");
+                    b.HasIndex("DynamicEntityPropertyId");
 
-                    b.ToTable("AbpEntityDynamicParameterValues");
+                    b.ToTable("AbpDynamicEntityPropertyValues");
+                });
+
+            modelBuilder.Entity("Abp.DynamicEntityProperties.DynamicProperty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InputType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Permission")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PropertyName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropertyName", "TenantId")
+                        .IsUnique()
+                        .HasFilter("[PropertyName] IS NOT NULL AND [TenantId] IS NOT NULL");
+
+                    b.ToTable("AbpDynamicProperties");
+                });
+
+            modelBuilder.Entity("Abp.DynamicEntityProperties.DynamicPropertyValue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DynamicPropertyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DynamicPropertyId");
+
+                    b.ToTable("AbpDynamicPropertyValues");
                 });
 
             modelBuilder.Entity("Abp.EntityHistory.EntityChange", b =>
@@ -819,9 +822,15 @@ namespace ForeSpark.Migrations
                         .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
 
+                    b.Property<string>("NewValueHash")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("OriginalValue")
                         .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
+
+                    b.Property<string>("OriginalValueHash")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PropertyName")
                         .HasColumnType("nvarchar(96)")
@@ -1399,6 +1408,9 @@ namespace ForeSpark.Migrations
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
+                    b.Property<string>("CNIC")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(128)")
@@ -1512,6 +1524,83 @@ namespace ForeSpark.Migrations
                     b.ToTable("AbpUsers");
                 });
 
+            modelBuilder.Entity("ForeSpark.Cities.Cities", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("ForeSpark.Installations.Installations", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("Lat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Lng")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Make")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Serial")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.ToTable("Installations");
+                });
+
             modelBuilder.Entity("ForeSpark.MultiTenancy.Tenant", b =>
                 {
                     b.Property<int>("Id")
@@ -1575,78 +1664,18 @@ namespace ForeSpark.Migrations
                     b.ToTable("AbpTenants");
                 });
 
-            modelBuilder.Entity("ForeSpark.Orders.OrderedProducts", b =>
+            modelBuilder.Entity("ForeSpark.Request.Request", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<long>("PerItemPrice")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderedProducts");
-                });
-
-            modelBuilder.Entity("ForeSpark.Orders.Orders", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("DiscountedTotalPrice")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("PaymentMethod")
+                    b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("TotalPrice")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("ForeSpark.Product.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("CNIC")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
@@ -1663,9 +1692,6 @@ namespace ForeSpark.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("DiscountedPrice")
-                        .HasColumnType("float");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -1675,17 +1701,17 @@ namespace ForeSpark.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<double?>("Lat")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Lng")
+                        .HasColumnType("float");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<string>("SKU")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double?>("Weight")
-                        .HasColumnType("float");
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1695,10 +1721,12 @@ namespace ForeSpark.Migrations
 
                     b.HasIndex("LastModifierUserId");
 
-                    b.ToTable("Products");
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("Requests");
                 });
 
-            modelBuilder.Entity("ForeSpark.Product.ProductImages", b =>
+            modelBuilder.Entity("ForeSpark.Request.RequestImages", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1708,87 +1736,29 @@ namespace ForeSpark.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("RequestId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("RequestId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("RequestImages");
                 });
 
-            modelBuilder.Entity("ForeSpark.Warehouse.Warehouse", b =>
+            modelBuilder.Entity("ForeSpark.Request.RequestStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorUserId");
-
-                    b.HasIndex("DeleterUserId");
-
-                    b.HasIndex("LastModifierUserId");
-
-                    b.ToTable("Warehouses");
-                });
-
-            modelBuilder.Entity("ForeSpark.WarehouseProducts.WarehouseProducts", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SoldStock")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalStock")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WarehouseId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("WarehouseId");
-
-                    b.ToTable("WarehouseProducts");
+                    b.ToTable("RequestStatuses");
                 });
 
             modelBuilder.Entity("Abp.Application.Features.EditionFeatureSetting", b =>
@@ -1896,29 +1866,29 @@ namespace ForeSpark.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Abp.DynamicEntityParameters.DynamicParameterValue", b =>
+            modelBuilder.Entity("Abp.DynamicEntityProperties.DynamicEntityProperty", b =>
                 {
-                    b.HasOne("Abp.DynamicEntityParameters.DynamicParameter", "DynamicParameter")
-                        .WithMany("DynamicParameterValues")
-                        .HasForeignKey("DynamicParameterId")
+                    b.HasOne("Abp.DynamicEntityProperties.DynamicProperty", "DynamicProperty")
+                        .WithMany()
+                        .HasForeignKey("DynamicPropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Abp.DynamicEntityParameters.EntityDynamicParameter", b =>
+            modelBuilder.Entity("Abp.DynamicEntityProperties.DynamicEntityPropertyValue", b =>
                 {
-                    b.HasOne("Abp.DynamicEntityParameters.DynamicParameter", "DynamicParameter")
+                    b.HasOne("Abp.DynamicEntityProperties.DynamicEntityProperty", "DynamicEntityProperty")
                         .WithMany()
-                        .HasForeignKey("DynamicParameterId")
+                        .HasForeignKey("DynamicEntityPropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Abp.DynamicEntityParameters.EntityDynamicParameterValue", b =>
+            modelBuilder.Entity("Abp.DynamicEntityProperties.DynamicPropertyValue", b =>
                 {
-                    b.HasOne("Abp.DynamicEntityParameters.EntityDynamicParameter", "EntityDynamicParameter")
-                        .WithMany()
-                        .HasForeignKey("EntityDynamicParameterId")
+                    b.HasOne("Abp.DynamicEntityProperties.DynamicProperty", "DynamicProperty")
+                        .WithMany("DynamicPropertyValues")
+                        .HasForeignKey("DynamicPropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1987,6 +1957,27 @@ namespace ForeSpark.Migrations
                         .HasForeignKey("LastModifierUserId");
                 });
 
+            modelBuilder.Entity("ForeSpark.Installations.Installations", b =>
+                {
+                    b.HasOne("ForeSpark.Cities.Cities", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ForeSpark.Authorization.Users.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("ForeSpark.Authorization.Users.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("ForeSpark.Authorization.Users.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+                });
+
             modelBuilder.Entity("ForeSpark.MultiTenancy.Tenant", b =>
                 {
                     b.HasOne("ForeSpark.Authorization.Users.User", "CreatorUser")
@@ -2006,31 +1997,7 @@ namespace ForeSpark.Migrations
                         .HasForeignKey("LastModifierUserId");
                 });
 
-            modelBuilder.Entity("ForeSpark.Orders.OrderedProducts", b =>
-                {
-                    b.HasOne("ForeSpark.Orders.Orders", "Orders")
-                        .WithMany("OrderedProducts")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ForeSpark.Product.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ForeSpark.Orders.Orders", b =>
-                {
-                    b.HasOne("ForeSpark.Authorization.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ForeSpark.Product.Product", b =>
+            modelBuilder.Entity("ForeSpark.Request.Request", b =>
                 {
                     b.HasOne("ForeSpark.Authorization.Users.User", "CreatorUser")
                         .WithMany()
@@ -2043,43 +2010,19 @@ namespace ForeSpark.Migrations
                     b.HasOne("ForeSpark.Authorization.Users.User", "LastModifierUser")
                         .WithMany()
                         .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("ForeSpark.Request.RequestStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("ForeSpark.Product.ProductImages", b =>
+            modelBuilder.Entity("ForeSpark.Request.RequestImages", b =>
                 {
-                    b.HasOne("ForeSpark.Product.Product", "Product")
+                    b.HasOne("ForeSpark.Request.Request", "Request")
                         .WithMany("ProductImages")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ForeSpark.Warehouse.Warehouse", b =>
-                {
-                    b.HasOne("ForeSpark.Authorization.Users.User", "CreatorUser")
-                        .WithMany()
-                        .HasForeignKey("CreatorUserId");
-
-                    b.HasOne("ForeSpark.Authorization.Users.User", "DeleterUser")
-                        .WithMany()
-                        .HasForeignKey("DeleterUserId");
-
-                    b.HasOne("ForeSpark.Authorization.Users.User", "LastModifierUser")
-                        .WithMany()
-                        .HasForeignKey("LastModifierUserId");
-                });
-
-            modelBuilder.Entity("ForeSpark.WarehouseProducts.WarehouseProducts", b =>
-                {
-                    b.HasOne("ForeSpark.Product.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ForeSpark.Warehouse.Warehouse", "Warehouse")
-                        .WithMany()
-                        .HasForeignKey("WarehouseId")
+                        .HasForeignKey("RequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

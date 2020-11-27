@@ -27,6 +27,10 @@ namespace ForeSpark.Users.Dto
         [StringLength(AbpUserBase.MaxEmailAddressLength)]
         public string EmailAddress { get; set; }
 
+        [Required]
+        [StringLength(13)]
+        public string CNIC { get; set; }
+
         public bool IsActive { get; set; }
 
         public string[] RoleNames { get; set; }

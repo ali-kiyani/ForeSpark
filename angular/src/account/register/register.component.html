@@ -4,6 +4,31 @@
     <div class="form-group">
       <div class="input-group">
         <input
+          type="number"
+          class="form-control"
+          name="cnic"
+          placeholder="{{ 'CNIC' | localize }}"
+          required
+          minlength="13"
+          maxlength="13"
+          [(ngModel)]="model.cnic"
+          #cnicModel="ngModel"
+          #cnicEl
+        />
+        <div class="input-group-append">
+          <div class="input-group-text">
+            <span class="fa fa-id-card"></span>
+          </div>
+        </div>
+      </div>
+      <abp-validation-summary
+        [control]="nameModel"
+        [controlEl]="nameEl"
+      ></abp-validation-summary>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <input
           type="text"
           class="form-control"
           name="name"

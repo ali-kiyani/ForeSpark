@@ -25,7 +25,7 @@ export abstract class AppComponentBase {
     multiTenancy: AbpMultiTenancyService;
     appSession: AppSessionService;
     elementRef: ElementRef;
-    productImageUrl = `${AppConsts.remoteServiceBaseUrl}/api/Product/GetImage/`;
+    requestImageUrl = `${AppConsts.remoteServiceBaseUrl}/api/Request/GetImage/`;
 
     constructor(injector: Injector) {
         this.localization = injector.get(LocalizationService);
