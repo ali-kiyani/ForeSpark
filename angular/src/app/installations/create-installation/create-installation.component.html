@@ -23,6 +23,28 @@
             </div>
         </div>
         <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="address">
+                {{ "Address" | localize }}
+            </label>
+            <div class="col-md-9">
+                <textarea type="text" class="form-control" name="address" id="address"
+                    [(ngModel)]="installation.address">
+              </textarea>
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="city">
+                {{ "City" | localize }}
+            </label>
+            <div class="col-md-5">
+                <select class="form-control" name="city" [(ngModel)]="installation.cityId" #city (change)="cityChanged(city.value)">
+                    <option [value]="0" [disabled]="true">--Select--</option>
+                    <option *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
+                </select>
+                <abp-validation-summary [control]="lngModel" [controlEl]="lngEl"></abp-validation-summary>
+            </div>
+        </div>
+        <div class="form-group row required">
             <label class="col-md-3 col-form-label" for="lat">
                 {{ "Lat" | localize }}
             </label>
@@ -44,27 +66,6 @@
             <div class="col-md-5">
                 <input type="number" class="form-control" name="lng" id="lng" required [(ngModel)]="installation.lng"
                     [disabled]="true" #lngModel="ngModel" #lngEl />
-                <abp-validation-summary [control]="lngModel" [controlEl]="lngEl"></abp-validation-summary>
-            </div>
-        </div>
-        <div class="form-group row required">
-            <label class="col-md-3 col-form-label" for="address">
-                {{ "Address" | localize }}
-            </label>
-            <div class="col-md-9">
-                <textarea type="text" class="form-control" name="address" id="address"
-                    [(ngModel)]="installation.address">
-              </textarea>
-            </div>
-        </div>
-        <div class="form-group row required">
-            <label class="col-md-3 col-form-label" for="city">
-                {{ "City" | localize }}
-            </label>
-            <div class="col-md-5">
-                <select class="form-control" name="city" [(ngModel)]="installation.cityId">
-                    <option *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
-                </select>
                 <abp-validation-summary [control]="lngModel" [controlEl]="lngEl"></abp-validation-summary>
             </div>
         </div>

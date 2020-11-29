@@ -7,6 +7,7 @@ using Abp.EntityFrameworkCore.Uow;
 using Abp.MultiTenancy;
 using ForeSpark.EntityFrameworkCore.Seed.Host;
 using ForeSpark.EntityFrameworkCore.Seed.Tenants;
+using ForeSpark.EntityFrameworkCore.Seed.RequestStatus;
 
 namespace ForeSpark.EntityFrameworkCore.Seed
 {
@@ -27,6 +28,8 @@ namespace ForeSpark.EntityFrameworkCore.Seed
             // Default tenant seed (in host database).
             new DefaultTenantBuilder(context).Create();
             new TenantRoleAndUserBuilder(context, 1).Create();
+            new RequestStatusBuilder(context).Create();
+            new Cities.CitiesBuilder(context).Create();
         }
 
         private static void WithDbContext<TDbContext>(IIocResolver iocResolver, Action<TDbContext> contextAction)

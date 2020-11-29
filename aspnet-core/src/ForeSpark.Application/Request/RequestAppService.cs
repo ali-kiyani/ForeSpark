@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace ForeSpark.Request
 {
@@ -27,7 +28,8 @@ namespace ForeSpark.Request
             CheckGetAllPermission();
             var allRequests = _requestRepository.GetAllIncluding(x => x.Status)
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.CNIC.Contains(input.Keyword) || x.Name.Contains(input.Keyword) || x.Address.Contains(input.Keyword))
-                .WhereIf(!input.Status.IsNullOrWhiteSpace(), x => x.StatusId == (int)Enum.Parse(typeof(RequestStatusEnum), input.Status.ToUpper()));
+                .WhereIf(!input.Status.IsNullOrWhiteSpace(), x => x.StatusId == (int)Enum.Parse(typeof(RequestStatusEnum), input.Status.ToUpper()))
+                .WhereIf(input.CityId.HasValue, x => x.CityId == input.CityId);
             var pagedRequests = allRequests.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
             return Task.FromResult(new PagedResultDto<RequestDto>(allRequests.Count(), ObjectMapper.Map<List<RequestDto>>(pagedRequests)));
         }
@@ -43,11 +45,12 @@ namespace ForeSpark.Request
                 Address = input.Address,
                 Lat = input.Lat,
                 Lng = input.Lng,
+                CityId = input.CityId,
                 StatusId = (byte)RequestStatusEnum.PENDING
             };
 
             var requestId = await _requestRepository.InsertAndGetIdAsync(requestObj);
-            var request = _requestRepository.GetAllIncluding(x => x.Status).Where(x => x.Id == requestId).FirstOrDefault();
+            var request = _requestRepository.GetAllIncluding(x => x.Status).Where(x => x.Id == requestId).Include(x => x.City).FirstOrDefault();
             return ObjectMapper.Map<RequestDto>(request);
         }
 
@@ -103,7 +106,7 @@ namespace ForeSpark.Request
 
         protected override IQueryable<Request> ApplySorting(IQueryable<Request> query, PagedRequestResultRequestDto input)
         {
-            return query.OrderBy(order => order.CreationTime);
+            return query.OrderByDescending(order => order.CreationTime);
         }
     }
 }

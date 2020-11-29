@@ -3,7 +3,7 @@
     <abp-modal-header [title]="'CreateNewRequest' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
 
     <div class="modal-body">
-        <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="mapClick($event)">
+        <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="mapClick($event)" [zoom]="12">
             <agm-marker *ngIf="displayMarker" [latitude]="lat" [longitude]="lng"></agm-marker>
           </agm-map>
     </div>

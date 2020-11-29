@@ -16,6 +16,7 @@ export class CreateInstallationComponent extends AppComponentBase implements OnI
   installation = new CreateInstallationsDto();
   cities: CitiesDto[] = [];
   isActive = false;
+  selectedCity = new CitiesDto();
 
   @Output() onSave = new EventEmitter<any>();
 
@@ -24,12 +25,19 @@ export class CreateInstallationComponent extends AppComponentBase implements OnI
     public bsModalRef: BsModalRef,
     private _modalService: BsModalService) {
       super(injector);
+      this.installation.cityId = 0;
+      this.selectedCity.lat = 33.6845867;
+      this.selectedCity.lng = 73.0304453;
     }
 
   ngOnInit(): void {
     this._installationService.getAllCities().subscribe(result => {
       this.cities = result.items;
     });
+  }
+
+  cityChanged(value: number) {
+    this.selectedCity = this.cities.find(x => x.id === Number(value));
   }
 
   save() {
@@ -60,6 +68,10 @@ export class CreateInstallationComponent extends AppComponentBase implements OnI
       MapComponent,
       {
         class: 'modal-lg',
+        initialState: {
+          lat: this.selectedCity.lat,
+          lng: this.selectedCity.lng
+        }
       }
     );
     createOrEditRequestDialog.content.onSave.subscribe((latlng) => {

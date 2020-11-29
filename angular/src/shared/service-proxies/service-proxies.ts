@@ -205,6 +205,69 @@ export class ConfigurationServiceProxy {
 }
 
 @Injectable()
+export class HomeServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getHomeMetaData(): Observable<HomeDto> {
+        let url_ = this.baseUrl + "/api/services/app/Home/GetHomeMetaData";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetHomeMetaData(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetHomeMetaData(<any>response_);
+                } catch (e) {
+                    return <Observable<HomeDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<HomeDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetHomeMetaData(response: HttpResponseBase): Observable<HomeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = HomeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<HomeDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class InstallationsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -213,6 +276,62 @@ export class InstallationsServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create(body: CreateInstallationsDto | undefined): Observable<InstallationsDto> {
+        let url_ = this.baseUrl + "/api/services/app/Installations/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<InstallationsDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<InstallationsDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<InstallationsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InstallationsDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<InstallationsDto>(<any>null);
     }
 
     /**
@@ -669,62 +788,6 @@ export class InstallationsServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    create(body: CreateInstallationsDto | undefined): Observable<InstallationsDto> {
-        let url_ = this.baseUrl + "/api/services/app/Installations/Create";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreate(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreate(<any>response_);
-                } catch (e) {
-                    return <Observable<InstallationsDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<InstallationsDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processCreate(response: HttpResponseBase): Observable<InstallationsDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = InstallationsDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<InstallationsDto>(<any>null);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
     update(body: InstallationsDto | undefined): Observable<InstallationsDto> {
         let url_ = this.baseUrl + "/api/services/app/Installations/Update";
         url_ = url_.replace(/[?&]$/, "");
@@ -948,16 +1011,19 @@ export class RequestServiceProxy {
     /**
      * @param keyword (optional) 
      * @param status (optional) 
+     * @param cityId (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(keyword: string | null | undefined, status: string | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<RequestDtoPagedResultDto> {
+    getAll(keyword: string | null | undefined, status: string | null | undefined, cityId: number | null | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<RequestDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/Request/GetAll?";
         if (keyword !== undefined && keyword !== null)
             url_ += "Keyword=" + encodeURIComponent("" + keyword) + "&";
         if (status !== undefined && status !== null)
             url_ += "Status=" + encodeURIComponent("" + status) + "&";
+        if (cityId !== undefined && cityId !== null)
+            url_ += "CityId=" + encodeURIComponent("" + cityId) + "&";
         if (skipCount === null)
             throw new Error("The parameter 'skipCount' cannot be null.");
         else if (skipCount !== undefined)
@@ -3223,8 +3289,120 @@ export interface IChangeUiThemeInput {
     theme: string;
 }
 
+export class RequestsHomeDto implements IRequestsHomeDto {
+    pending: number;
+    approved: number;
+    declined: number;
+    processed: number;
+
+    constructor(data?: IRequestsHomeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.pending = _data["pending"];
+            this.approved = _data["approved"];
+            this.declined = _data["declined"];
+            this.processed = _data["processed"];
+        }
+    }
+
+    static fromJS(data: any): RequestsHomeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RequestsHomeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["pending"] = this.pending;
+        data["approved"] = this.approved;
+        data["declined"] = this.declined;
+        data["processed"] = this.processed;
+        return data; 
+    }
+
+    clone(): RequestsHomeDto {
+        const json = this.toJSON();
+        let result = new RequestsHomeDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRequestsHomeDto {
+    pending: number;
+    approved: number;
+    declined: number;
+    processed: number;
+}
+
+export class InstallationsHomeDto implements IInstallationsHomeDto {
+    installationsTotal: number;
+    installationsActive: number;
+    installationsInactive: number;
+    installationsMalfunction: number;
+
+    constructor(data?: IInstallationsHomeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.installationsTotal = _data["installationsTotal"];
+            this.installationsActive = _data["installationsActive"];
+            this.installationsInactive = _data["installationsInactive"];
+            this.installationsMalfunction = _data["installationsMalfunction"];
+        }
+    }
+
+    static fromJS(data: any): InstallationsHomeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InstallationsHomeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["installationsTotal"] = this.installationsTotal;
+        data["installationsActive"] = this.installationsActive;
+        data["installationsInactive"] = this.installationsInactive;
+        data["installationsMalfunction"] = this.installationsMalfunction;
+        return data; 
+    }
+
+    clone(): InstallationsHomeDto {
+        const json = this.toJSON();
+        let result = new InstallationsHomeDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IInstallationsHomeDto {
+    installationsTotal: number;
+    installationsActive: number;
+    installationsInactive: number;
+    installationsMalfunction: number;
+}
+
 export class CitiesDto implements ICitiesDto {
     name: string | undefined;
+    lat: number;
+    lng: number;
     id: number;
 
     constructor(data?: ICitiesDto) {
@@ -3239,6 +3417,8 @@ export class CitiesDto implements ICitiesDto {
     init(_data?: any) {
         if (_data) {
             this.name = _data["name"];
+            this.lat = _data["lat"];
+            this.lng = _data["lng"];
             this.id = _data["id"];
         }
     }
@@ -3253,6 +3433,8 @@ export class CitiesDto implements ICitiesDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
+        data["lat"] = this.lat;
+        data["lng"] = this.lng;
         data["id"] = this.id;
         return data; 
     }
@@ -3267,13 +3449,16 @@ export class CitiesDto implements ICitiesDto {
 
 export interface ICitiesDto {
     name: string | undefined;
+    lat: number;
+    lng: number;
     id: number;
 }
 
-export class CitiesDtoListResultDto implements ICitiesDtoListResultDto {
-    items: CitiesDto[] | undefined;
+export class RequestsInsightHome implements IRequestsInsightHome {
+    city: CitiesDto;
+    requestsCount: number;
 
-    constructor(data?: ICitiesDtoListResultDto) {
+    constructor(data?: IRequestsInsightHome) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3284,46 +3469,171 @@ export class CitiesDtoListResultDto implements ICitiesDtoListResultDto {
 
     init(_data?: any) {
         if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items.push(CitiesDto.fromJS(item));
-            }
+            this.city = _data["city"] ? CitiesDto.fromJS(_data["city"]) : <any>undefined;
+            this.requestsCount = _data["requestsCount"];
         }
     }
 
-    static fromJS(data: any): CitiesDtoListResultDto {
+    static fromJS(data: any): RequestsInsightHome {
         data = typeof data === 'object' ? data : {};
-        let result = new CitiesDtoListResultDto();
+        let result = new RequestsInsightHome();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
+        data["city"] = this.city ? this.city.toJSON() : <any>undefined;
+        data["requestsCount"] = this.requestsCount;
         return data; 
     }
 
-    clone(): CitiesDtoListResultDto {
+    clone(): RequestsInsightHome {
         const json = this.toJSON();
-        let result = new CitiesDtoListResultDto();
+        let result = new RequestsInsightHome();
         result.init(json);
         return result;
     }
 }
 
-export interface ICitiesDtoListResultDto {
-    items: CitiesDto[] | undefined;
+export interface IRequestsInsightHome {
+    city: CitiesDto;
+    requestsCount: number;
+}
+
+export class HomeDto implements IHomeDto {
+    requestsHome: RequestsHomeDto;
+    installationsHome: InstallationsHomeDto;
+    insightHome: RequestsInsightHome[] | undefined;
+    id: number;
+
+    constructor(data?: IHomeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.requestsHome = _data["requestsHome"] ? RequestsHomeDto.fromJS(_data["requestsHome"]) : <any>undefined;
+            this.installationsHome = _data["installationsHome"] ? InstallationsHomeDto.fromJS(_data["installationsHome"]) : <any>undefined;
+            if (Array.isArray(_data["insightHome"])) {
+                this.insightHome = [] as any;
+                for (let item of _data["insightHome"])
+                    this.insightHome.push(RequestsInsightHome.fromJS(item));
+            }
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): HomeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new HomeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["requestsHome"] = this.requestsHome ? this.requestsHome.toJSON() : <any>undefined;
+        data["installationsHome"] = this.installationsHome ? this.installationsHome.toJSON() : <any>undefined;
+        if (Array.isArray(this.insightHome)) {
+            data["insightHome"] = [];
+            for (let item of this.insightHome)
+                data["insightHome"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): HomeDto {
+        const json = this.toJSON();
+        let result = new HomeDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IHomeDto {
+    requestsHome: RequestsHomeDto;
+    installationsHome: InstallationsHomeDto;
+    insightHome: RequestsInsightHome[] | undefined;
+    id: number;
+}
+
+export class CreateInstallationsDto implements ICreateInstallationsDto {
+    make: string | undefined;
+    serial: string | undefined;
+    cityId: number;
+    status: number;
+    lat: number;
+    lng: number;
+    address: string | undefined;
+
+    constructor(data?: ICreateInstallationsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.make = _data["make"];
+            this.serial = _data["serial"];
+            this.cityId = _data["cityId"];
+            this.status = _data["status"];
+            this.lat = _data["lat"];
+            this.lng = _data["lng"];
+            this.address = _data["address"];
+        }
+    }
+
+    static fromJS(data: any): CreateInstallationsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateInstallationsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["make"] = this.make;
+        data["serial"] = this.serial;
+        data["cityId"] = this.cityId;
+        data["status"] = this.status;
+        data["lat"] = this.lat;
+        data["lng"] = this.lng;
+        data["address"] = this.address;
+        return data; 
+    }
+
+    clone(): CreateInstallationsDto {
+        const json = this.toJSON();
+        let result = new CreateInstallationsDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateInstallationsDto {
+    make: string | undefined;
+    serial: string | undefined;
+    cityId: number;
+    status: number;
+    lat: number;
+    lng: number;
+    address: string | undefined;
 }
 
 export class InstallationsDto implements IInstallationsDto {
     make: string | undefined;
-    serial: string;
+    serial: string | undefined;
     city: CitiesDto;
     status: number;
     lat: number;
@@ -3383,13 +3693,64 @@ export class InstallationsDto implements IInstallationsDto {
 
 export interface IInstallationsDto {
     make: string | undefined;
-    serial: string;
+    serial: string | undefined;
     city: CitiesDto;
     status: number;
     lat: number;
     lng: number;
     address: string | undefined;
     id: number;
+}
+
+export class CitiesDtoListResultDto implements ICitiesDtoListResultDto {
+    items: CitiesDto[] | undefined;
+
+    constructor(data?: ICitiesDtoListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(CitiesDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CitiesDtoListResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CitiesDtoListResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): CitiesDtoListResultDto {
+        const json = this.toJSON();
+        let result = new CitiesDtoListResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICitiesDtoListResultDto {
+    items: CitiesDto[] | undefined;
 }
 
 export class InstallationsDtoPagedResultDto implements IInstallationsDtoPagedResultDto {
@@ -3498,73 +3859,6 @@ export interface IInstallationsDtoListResultDto {
     items: InstallationsDto[] | undefined;
 }
 
-export class CreateInstallationsDto implements ICreateInstallationsDto {
-    make: string | undefined;
-    serial: string | undefined;
-    cityId: number;
-    status: number;
-    lat: number;
-    lng: number;
-    address: string | undefined;
-
-    constructor(data?: ICreateInstallationsDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.make = _data["make"];
-            this.serial = _data["serial"];
-            this.cityId = _data["cityId"];
-            this.status = _data["status"];
-            this.lat = _data["lat"];
-            this.lng = _data["lng"];
-            this.address = _data["address"];
-        }
-    }
-
-    static fromJS(data: any): CreateInstallationsDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateInstallationsDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["make"] = this.make;
-        data["serial"] = this.serial;
-        data["cityId"] = this.cityId;
-        data["status"] = this.status;
-        data["lat"] = this.lat;
-        data["lng"] = this.lng;
-        data["address"] = this.address;
-        return data; 
-    }
-
-    clone(): CreateInstallationsDto {
-        const json = this.toJSON();
-        let result = new CreateInstallationsDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICreateInstallationsDto {
-    make: string | undefined;
-    serial: string | undefined;
-    cityId: number;
-    status: number;
-    lat: number;
-    lng: number;
-    address: string | undefined;
-}
-
 export class RequestStatusDto implements IRequestStatusDto {
     status: string | undefined;
     id: number;
@@ -3619,6 +3913,7 @@ export class RequestDto implements IRequestDto {
     description: string | undefined;
     lat: number | undefined;
     lng: number | undefined;
+    city: CitiesDto;
     status: RequestStatusDto;
     id: number;
 
@@ -3639,6 +3934,7 @@ export class RequestDto implements IRequestDto {
             this.description = _data["description"];
             this.lat = _data["lat"];
             this.lng = _data["lng"];
+            this.city = _data["city"] ? CitiesDto.fromJS(_data["city"]) : <any>undefined;
             this.status = _data["status"] ? RequestStatusDto.fromJS(_data["status"]) : <any>undefined;
             this.id = _data["id"];
         }
@@ -3659,6 +3955,7 @@ export class RequestDto implements IRequestDto {
         data["description"] = this.description;
         data["lat"] = this.lat;
         data["lng"] = this.lng;
+        data["city"] = this.city ? this.city.toJSON() : <any>undefined;
         data["status"] = this.status ? this.status.toJSON() : <any>undefined;
         data["id"] = this.id;
         return data; 
@@ -3679,6 +3976,7 @@ export interface IRequestDto {
     description: string | undefined;
     lat: number | undefined;
     lng: number | undefined;
+    city: CitiesDto;
     status: RequestStatusDto;
     id: number;
 }
@@ -3745,6 +4043,7 @@ export class CreateRequestDto implements ICreateRequestDto {
     description: string | undefined;
     lat: number | undefined;
     lng: number | undefined;
+    cityId: number;
 
     constructor(data?: ICreateRequestDto) {
         if (data) {
@@ -3763,6 +4062,7 @@ export class CreateRequestDto implements ICreateRequestDto {
             this.description = _data["description"];
             this.lat = _data["lat"];
             this.lng = _data["lng"];
+            this.cityId = _data["cityId"];
         }
     }
 
@@ -3781,6 +4081,7 @@ export class CreateRequestDto implements ICreateRequestDto {
         data["description"] = this.description;
         data["lat"] = this.lat;
         data["lng"] = this.lng;
+        data["cityId"] = this.cityId;
         return data; 
     }
 
@@ -3799,6 +4100,7 @@ export interface ICreateRequestDto {
     description: string | undefined;
     lat: number | undefined;
     lng: number | undefined;
+    cityId: number;
 }
 
 export class RequestDetailsDto implements IRequestDetailsDto {

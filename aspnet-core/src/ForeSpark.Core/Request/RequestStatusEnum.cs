@@ -8,6 +8,7 @@ namespace ForeSpark.Request
     {
         PENDING = 1,
         APPROVED = 2,
-        DECLINED = 3
+        DECLINED = 3,
+        PROCESSED = 4
     }
 }

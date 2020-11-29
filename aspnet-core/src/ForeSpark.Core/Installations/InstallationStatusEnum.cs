@@ -7,6 +7,7 @@ namespace ForeSpark.Installations
     public enum InstallationStatusEnum
     {
         ACTIVE = 1,
-        INACTIVE = 2
+        INACTIVE = 2,
+        MALFUNCTION = 3
     }
 }

@@ -18,6 +18,7 @@ namespace ForeSpark
         public override void PreInitialize()
         {
             Configuration.Auditing.IsEnabledForAnonymousUsers = true;
+            Configuration.Auditing.IsEnabled = false;
 
             // Declare entity types
             Configuration.Modules.Zero().EntityTypes.Tenant = typeof(Tenant);

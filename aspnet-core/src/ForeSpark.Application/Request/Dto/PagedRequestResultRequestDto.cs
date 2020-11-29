@@ -6,5 +6,6 @@ namespace ForeSpark.Request.Dto
     {
         public string Keyword { get; set; }
         public string Status { get; set; }
+        public int? CityId { get; set; }
     }
 }

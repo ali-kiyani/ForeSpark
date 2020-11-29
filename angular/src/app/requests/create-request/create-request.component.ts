@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, EventEmitter, Output } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { RequestServiceProxy, RequestDto } from '@shared/service-proxies/service-proxies';
+import { RequestServiceProxy, RequestDto, InstallationsServiceProxy, CitiesDto, CreateRequestDto } from '@shared/service-proxies/service-proxies';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs/operators';
 import * as _ from 'lodash';
@@ -15,28 +15,38 @@ export class CreateRequestComponent extends AppComponentBase
 implements OnInit {
 
   saving = false;
-  request = new RequestDto();
+  request = new CreateRequestDto();
   files: File[] = [];
+  cities: CitiesDto[] = [];
+  selectedCity = new CitiesDto();
 
   @Output() onSave = new EventEmitter<any>();
 
   constructor( injector: Injector,
     private _requestService: RequestServiceProxy,
     public bsModalRef: BsModalRef,
+    private _installationService: InstallationsServiceProxy,
     private _modalService: BsModalService) {
       super(injector);
+      this.request.cityId = 0;
+      this.selectedCity.lat = 33.6845867;
+      this.selectedCity.lng = 73.0304453;
      }
 
   ngOnInit(): void {
+    this._installationService.getAllCities().subscribe(result => {
+      this.cities = result.items;
+    });
+  }
+
+  cityChanged(value: number) {
+    this.selectedCity = this.cities.find(x => x.id === Number(value));
   }
 
   save() {
     this.saving = true;
-
-    const request = new RequestDto();
-    request.init(this.request);
     const formData = new FormData();
-    formData.append('requestForm', JSON.stringify(request));
+    formData.append('requestForm', JSON.stringify(this.request));
     for(let i = 0; i < this.files.length; i++) {
       formData.append('image_' + i, this.files[i], this.files[i].name);
     }
@@ -66,6 +76,10 @@ implements OnInit {
       MapComponent,
       {
         class: 'modal-lg',
+        initialState: {
+          lat: this.selectedCity.lat,
+          lng: this.selectedCity.lng
+        }
       }
     );
     createOrEditRequestDialog.content.onSave.subscribe((latlng) => {

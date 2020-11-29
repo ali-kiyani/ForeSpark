@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { PagedRequestDto, PagedListingComponentBase } from '@shared/paged-listing-component-base';
-import { RequestDto, RequestServiceProxy, RequestDtoPagedResultDto } from '@shared/service-proxies/service-proxies';
+import { RequestDto, RequestServiceProxy, RequestDtoPagedResultDto, CitiesDto, InstallationsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CreateRequestComponent } from './create-request/create-request.component';
@@ -18,14 +18,16 @@ class PagedRequestsRequestDto extends PagedRequestDto {
   templateUrl: './requests.component.html',
   animations: [appModuleAnimation()]
 })
-export class RequestsComponent extends PagedListingComponentBase<RequestDto> {
+export class RequestsComponent extends PagedListingComponentBase<RequestDto> implements OnInit {
 
   requests: RequestDto[] = [];
+  cities: CitiesDto[] = [];
   keyword = '';
   status: string;
+  selectedCity = 1;
 
   constructor(injector: Injector, private _requestService: RequestServiceProxy, private _modalService: BsModalService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute, private _installationService: InstallationsServiceProxy) {
     super(injector);
     this.route.params.subscribe(param => {
       this.status = param.status;
@@ -33,10 +35,16 @@ export class RequestsComponent extends PagedListingComponentBase<RequestDto> {
     });
   }
 
+  ngOnInit() {
+    this._installationService.getAllCities().subscribe(result => {
+      this.cities = result.items;
+    });
+  }
+
   list(request: PagedRequestsRequestDto, pageNumber: number, finishedCallback: Function): void {
     request.keyword = this.keyword;
     this._requestService
-      .getAll(request.keyword, this.status, request.skipCount, request.maxResultCount)
+      .getAll(request.keyword, this.status, this.selectedCity, request.skipCount, request.maxResultCount)
       .pipe(
         finalize(() => {
           finishedCallback();
@@ -65,6 +73,10 @@ export class RequestsComponent extends PagedListingComponentBase<RequestDto> {
         }
       }
     );
+  }
+
+  listCityChange() {
+    this.refresh();
   }
 
   createRequest() {

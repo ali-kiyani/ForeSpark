@@ -141,5 +141,14 @@
     <text name="CreateNewInstallation">Create New Installation</text>
     <text name="Installations">Installations</text>
     <text name="ImageNotFound">Image Not Found</text>
+    <text name="ApprovedRequests">Approved Requests</text>
+    <text name="View">More</text>
+    <text name="PendingRequests">Pending Requests</text>
+    <text name="DeclinedRequests">Declined Requests</text>
+    <text name="ProcessedRequests">Processed Requests</text>
+    <text name="TotalInstallations">Total Installations</text>
+    <text name="ActiveInstallations">Active Installations</text>
+    <text name="InactiveInstallations">Inactive Installations</text>
+    <text name="MalfunctionedInstallations">Malfunctioned Installations</text>
   </texts>
 </localizationDictionary>

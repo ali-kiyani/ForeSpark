@@ -4,14 +4,16 @@ using ForeSpark.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ForeSpark.Migrations
 {
     [DbContext(typeof(ForeSparkDbContext))]
-    partial class ForeSparkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201128120018_citiesUpdate")]
+    partial class citiesUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1683,9 +1685,6 @@ namespace ForeSpark.Migrations
                     b.Property<string>("CNIC")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -1723,8 +1722,6 @@ namespace ForeSpark.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CityId");
 
                     b.HasIndex("CreatorUserId");
 
@@ -2010,12 +2007,6 @@ namespace ForeSpark.Migrations
 
             modelBuilder.Entity("ForeSpark.Request.Request", b =>
                 {
-                    b.HasOne("ForeSpark.Cities.Cities", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ForeSpark.Authorization.Users.User", "CreatorUser")
                         .WithMany()
                         .HasForeignKey("CreatorUserId");
