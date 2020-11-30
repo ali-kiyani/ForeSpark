@@ -6,9 +6,9 @@ namespace ForeSpark.Request
 {
     public enum RequestStatusEnum
     {
-        PENDING = 1,
-        APPROVED = 2,
-        DECLINED = 3,
-        PROCESSED = 4
+        PENDING = 4,
+        APPROVED = 3,
+        DECLINED = 2,
+        PROCESSED = 1
     }
 }
