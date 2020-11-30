@@ -18,9 +18,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
 
   constructor(injector: Injector, private _homeService: HomeServiceProxy) {
     super(injector);
-    this.homeDto.requestsHome = new RequestsHomeDto();
-    this.homeDto.installationsHome = new InstallationsHomeDto();
-    this.homeDto.insightHome = [];
+
   }
 
   ngOnInit() {
@@ -30,7 +28,6 @@ export class HomeComponent extends AppComponentBase implements OnInit {
         x.requestsCount *= 8000;
       });
       this.loaded = true;
-      debugger;
     });
   }
 }

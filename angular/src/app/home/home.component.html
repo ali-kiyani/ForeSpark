@@ -20,10 +20,7 @@
             <div class="icon">
               <i class="fas fa-check"></i>
             </div>
-            <a
-              href="https://github.com/aspnetboilerplate/aspnetboilerplate/stargazers"
-              class="small-box-footer"
-            >
+            <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/stargazers" class="small-box-footer">
               {{"View" | localize}}
               <i class="fas fa-arrow-circle-right"></i>
             </a>
@@ -38,12 +35,9 @@
             <div class="icon">
               <i class="fas fa-pause-circle"></i>
             </div>
-            <a
-              href="https://github.com/aspnetboilerplate/aspnetboilerplate/graphs/contributors"
-              class="small-box-footer"
-              target="_blank"
-            >
-            {{"View" | localize}}
+            <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/graphs/contributors"
+              class="small-box-footer" target="_blank">
+              {{"View" | localize}}
               <i class="fas fa-arrow-circle-right"></i>
             </a>
           </div>
@@ -57,12 +51,9 @@
             <div class="icon">
               <i class="fas fa-times"></i>
             </div>
-            <a
-              href="https://github.com/aspnetboilerplate/aspnetboilerplate/network/dependents"
-              class="small-box-footer"
-              target="_blank"
-            >
-            {{"View" | localize}}
+            <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/network/dependents" class="small-box-footer"
+              target="_blank">
+              {{"View" | localize}}
               <i class="fas fa-arrow-circle-right"></i>
             </a>
           </div>
@@ -76,12 +67,9 @@
             <div class="icon">
               <i class="fas fa-cogs"></i>
             </div>
-            <a
-              href="https://github.com/aspnetboilerplate/aspnetboilerplate/network/members"
-              class="small-box-footer"
-              target="_blank"
-            >
-            {{"View" | localize}}
+            <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/network/members" class="small-box-footer"
+              target="_blank">
+              {{"View" | localize}}
               <i class="fas fa-arrow-circle-right"></i>
             </a>
           </div>
@@ -142,27 +130,11 @@
           </div>
         </div>
       </div>
-      <agm-map [latitude]="homeDto.insightHome[0].city.lat" [longitude]="homeDto.insightHome[0].city.lng" [zoom]="8">
-        <agm-circle *ngFor="let city of homeDto.insightHome"
-        [latitude]="city.city.lat" 
-        [longitude]="city.city.lng" 
-        [radius]="city.requestsCount" 
-        [fillColor]="'red'"
-        (mouseOut)="infoWindow.close();">
-        <agm-info-window
-          [latitude]="city.city.lat"
-          [longitude]="city.city.lng"
-          [disableAutoPan]="false" #infoWindow>
-
-          <div>
-              <span>
-                <b>lol </b>
-              </span>
-          </div>
-
-        </agm-info-window>
-    </agm-circle>
-      </agm-map>
+        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="8">
+          <agm-circle *ngFor="let city of homeDto.insightHome" [latitude]="city.city.lat" [longitude]="city.city.lng"
+            [radius]="city.requestsCount" [fillColor]="'red'" (mouseOut)="infoWindow.close();">
+          </agm-circle>
+        </agm-map>
     </div>
   </section>
 </div>

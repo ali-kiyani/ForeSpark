@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ForeSpark.EntityFrameworkCore.Seed.RequestStatus
@@ -20,11 +22,14 @@ namespace ForeSpark.EntityFrameworkCore.Seed.RequestStatus
 
         private void CreateDefaultRequestStatus()
         {
-            _context.RequestStatuses.Add(new Request.RequestStatus("PENDING"));
-            _context.RequestStatuses.Add(new Request.RequestStatus("APPROVED"));
-            _context.RequestStatuses.Add(new Request.RequestStatus("DECLINED"));
-            _context.RequestStatuses.Add(new Request.RequestStatus("PROCESSED"));
-            _context.SaveChanges();
+            if (_context.RequestStatuses.Count() == 0)
+            {
+                _context.RequestStatuses.Add(new Request.RequestStatus("PENDING"));
+                _context.RequestStatuses.Add(new Request.RequestStatus("APPROVED"));
+                _context.RequestStatuses.Add(new Request.RequestStatus("DECLINED"));
+                _context.RequestStatuses.Add(new Request.RequestStatus("PROCESSED"));
+                _context.SaveChanges();
+            }
         }
     }
 }
