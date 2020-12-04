@@ -150,5 +150,7 @@
     <text name="ActiveInstallations">Active Installations</text>
     <text name="InactiveInstallations">Inactive Installations</text>
     <text name="MalfunctionedInstallations">Malfunctioned Installations</text>
+    <text name="RequestId">Request Id</text>
+    <text name="ViewOnMap">View On Map</text>
   </texts>
 </localizationDictionary>

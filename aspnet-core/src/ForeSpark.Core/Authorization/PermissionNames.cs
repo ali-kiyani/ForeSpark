@@ -12,5 +12,7 @@
 
         public const string Pages_Installations = "Pages.Installations";
 
+        public const string Pages_Processed = "Pages.Processed";
+
     }
 }

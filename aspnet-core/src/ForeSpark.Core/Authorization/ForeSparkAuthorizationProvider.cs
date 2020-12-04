@@ -13,6 +13,7 @@ namespace ForeSpark.Authorization
             context.CreatePermission(PermissionNames.Pages_Tenants, L("Tenants"), multiTenancySides: MultiTenancySides.Host);
             context.CreatePermission(PermissionNames.Pages_Requests, L("Requests"));
             context.CreatePermission(PermissionNames.Pages_Installations, L("Installations"));
+            context.CreatePermission(PermissionNames.Pages_Processed, L("Processed"));
         }
 
         private static ILocalizableString L(string name)

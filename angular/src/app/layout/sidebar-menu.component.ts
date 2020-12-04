@@ -93,6 +93,12 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
         '/app/installations',
         'fa fa-camera',
         'Pages.Installations'
+      ),
+      new MenuItem(
+        this.l('Reports'),
+        '/app/reports',
+        'fa fa-file',
+        'Pages.Processed'
       )
 
       /*,

@@ -48,6 +48,7 @@ import { InstallationsComponent } from './installations/installations.component'
 import { CreateInstallationComponent } from './installations/create-installation/create-installation.component';
 import { EditInstallationComponent } from './installations/edit-installation/edit-installation.component';
 import { ViewInMapComponent } from './installations/view-in-map/view-in-map.component';
+import { ProcessedComponent } from './processed/processed.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { ViewInMapComponent } from './installations/view-in-map/view-in-map.comp
     InstallationsComponent,
     CreateInstallationComponent,
     EditInstallationComponent,
-    ViewInMapComponent
+    ViewInMapComponent,
+    ProcessedComponent
   ],
   imports: [
     AgmCoreModule.forRoot({
