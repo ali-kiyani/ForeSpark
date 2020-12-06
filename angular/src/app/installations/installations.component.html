@@ -75,6 +75,9 @@
                       <span class="badge badge-warning mx-1" *ngIf="installation.status == 2">
                         {{ "INACTIVE" | localize }}
                       </span>
+                      <span class="badge badge-danger mx-1" *ngIf="installation.status == 3">
+                        {{ "MALFUNCTION" | localize }}
+                      </span>
                     </td>
                     <td>
                       <!-- <i class="fa fa-check" aria-hidden="true"></i> &nbsp; &nbsp;
@@ -91,6 +94,12 @@
                         <div class="dropdown-menu dropdown-primary">
                           <a class="dropdown-item" (click)="viewInMap(installation)"><i
                               class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{"ViewInMap" | localize}}</a>
+                              <a *ngIf="installation.status == 2" class="dropdown-item" (click)="changeStatus(installation, 1)"><i
+                                class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{"Activate" | localize}}</a>
+                              <a *ngIf="installation.status == 1" class="dropdown-item" (click)="changeStatus(installation, 2)"><i
+                                class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{"Deactivate" | localize}}</a>
+                              <a class="dropdown-item" (click)="changeStatus(installation, 3)"><i
+                                class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{"Malfunction" | localize}}</a>
                           <!-- <a class="dropdown-item" (click)="editInstallation(installation)"><i class="fas fa-pencil-alt"></i>&nbsp;&nbsp;{{"Edit" | localize}}</a>
                               <a class="dropdown-item" (click)="delete(installation)"><i class="fas fa-trash"></i>&nbsp;&nbsp;{{"Delete" | localize}}</a> -->
                         </div>

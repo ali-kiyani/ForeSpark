@@ -4,14 +4,16 @@ using ForeSpark.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ForeSpark.Migrations
 {
     [DbContext(typeof(ForeSparkDbContext))]
-    partial class ForeSparkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201206121242_processed-update3")]
+    partial class processedupdate3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

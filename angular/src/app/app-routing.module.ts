@@ -10,6 +10,8 @@ import { RolesComponent } from 'app/roles/roles.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
 import { RequestsComponent } from './requests/requests.component';
 import { InstallationsComponent } from './installations/installations.component';
+import { ProcessedComponent } from './processed/processed.component';
+import { ProcessedMapviewComponent } from './processed/processed-mapview/processed-mapview.component';
 
 @NgModule({
     imports: [
@@ -24,6 +26,10 @@ import { InstallationsComponent } from './installations/installations.component'
                     { path: 'requests/:status', component: RequestsComponent, data: { permission: 'Pages.Requests' },
                             canActivate: [AppRouteGuard] },
                     { path: 'installations', component: InstallationsComponent, data: { permission: 'Pages.Installations' },
+                            canActivate: [AppRouteGuard] },
+                    { path: 'reports', component: ProcessedComponent, data: { permission: 'Pages.Processed' },
+                    canActivate: [AppRouteGuard] },
+                    { path: 'reports/:id', component: ProcessedMapviewComponent, data: { permission: 'Pages.Processed' },
                             canActivate: [AppRouteGuard] },
                     { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
                     { path: 'about', component: AboutComponent },

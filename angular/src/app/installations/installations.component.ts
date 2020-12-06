@@ -137,6 +137,12 @@ export class InstallationsComponent extends PagedListingComponentBase<Installati
       );
   }
 
+  changeStatus(installation: InstallationsDto, status: number) {
+    this._installationService.changeStatus(installation.id, status).subscribe(result => {
+      this.refresh();
+    });
+  }
+
   protected list(request: PagedInstallationInstallationDto, pageNumber: number, finishedCallback: Function): void {
     request.keyword = this.keyword;
     this._installationService

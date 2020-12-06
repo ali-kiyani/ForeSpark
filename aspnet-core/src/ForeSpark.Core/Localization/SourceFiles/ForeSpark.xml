@@ -142,7 +142,7 @@
     <text name="Installations">Installations</text>
     <text name="ImageNotFound">Image Not Found</text>
     <text name="ApprovedRequests">Approved Requests</text>
-    <text name="View">More</text>
+    <text name="View">View</text>
     <text name="PendingRequests">Pending Requests</text>
     <text name="DeclinedRequests">Declined Requests</text>
     <text name="ProcessedRequests">Processed Requests</text>
@@ -152,5 +152,11 @@
     <text name="MalfunctionedInstallations">Malfunctioned Installations</text>
     <text name="RequestId">Request Id</text>
     <text name="ViewOnMap">View On Map</text>
+    <text name="Time">Time</text>
+    <text name="Location">Location</text>
+    <text name="ViewSnapshot">View Snapshot</text>
+    <text name="Activate">Activate</text>
+    <text name="Deactivate">Deactivate</text>
+    <text name="Malfunction">Malfunction</text>
   </texts>
 </localizationDictionary>

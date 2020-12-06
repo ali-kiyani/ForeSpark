@@ -16,7 +16,6 @@ namespace ForeSpark.EntityFrameworkCore
         public DbSet<Cities.Cities> Cities { get; set; }
         public DbSet<Installations.Installations> Installations { get; set; }
         public DbSet<Processed.Processed> Processed { get; set; }
-        public DbSet<ProcessedMetadata.ProcessedMetadata> ProcessedMetadata { get; set; }
         public ForeSparkDbContext(DbContextOptions<ForeSparkDbContext> options)
             : base(options)
         {

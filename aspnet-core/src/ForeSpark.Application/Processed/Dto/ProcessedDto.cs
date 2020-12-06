@@ -12,6 +12,5 @@ namespace ForeSpark.Processed.Dto
     public class ProcessedDto : EntityDto<int>
     {
         public RequestDto Request { get; set; }
-        public InstallationsDto Installations { get; set; }
     }
 }

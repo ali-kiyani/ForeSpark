@@ -20,7 +20,7 @@
             <div class="icon">
               <i class="fas fa-check"></i>
             </div>
-            <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/stargazers" class="small-box-footer">
+            <a [routerLink]="['/app/requests/approved']" class="small-box-footer">
               {{"View" | localize}}
               <i class="fas fa-arrow-circle-right"></i>
             </a>
@@ -35,7 +35,7 @@
             <div class="icon">
               <i class="fas fa-pause-circle"></i>
             </div>
-            <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/graphs/contributors"
+            <a [routerLink]="['/app/requests/pending']"
               class="small-box-footer" target="_blank">
               {{"View" | localize}}
               <i class="fas fa-arrow-circle-right"></i>
@@ -51,7 +51,7 @@
             <div class="icon">
               <i class="fas fa-times"></i>
             </div>
-            <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/network/dependents" class="small-box-footer"
+            <a [routerLink]="['/app/requests/declined']" class="small-box-footer"
               target="_blank">
               {{"View" | localize}}
               <i class="fas fa-arrow-circle-right"></i>
@@ -67,7 +67,7 @@
             <div class="icon">
               <i class="fas fa-cogs"></i>
             </div>
-            <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/network/members" class="small-box-footer"
+            <a [routerLink]="['/app/reports']" class="small-box-footer"
               target="_blank">
               {{"View" | localize}}
               <i class="fas fa-arrow-circle-right"></i>

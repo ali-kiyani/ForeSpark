@@ -4,14 +4,16 @@ using ForeSpark.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ForeSpark.Migrations
 {
     [DbContext(typeof(ForeSparkDbContext))]
-    partial class ForeSparkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201204201213_processed-update")]
+    partial class processedupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1677,6 +1679,50 @@ namespace ForeSpark.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("RequestId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
+
+                    b.HasIndex("DeleterUserId");
+
+                    b.HasIndex("LastModifierUserId");
+
+                    b.HasIndex("RequestId");
+
+                    b.ToTable("Processed");
+                });
+
+            modelBuilder.Entity("ForeSpark.ProcessedMetadata.ProcessedMetadata", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
@@ -1686,16 +1732,16 @@ namespace ForeSpark.Migrations
                     b.Property<int>("InstallationId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RequestId")
+                    b.Property<int>("ProcessedId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InstallationId");
 
-                    b.HasIndex("RequestId");
+                    b.HasIndex("ProcessedId");
 
-                    b.ToTable("Processed");
+                    b.ToTable("ProcessedMetadata");
                 });
 
             modelBuilder.Entity("ForeSpark.Request.Request", b =>
@@ -2038,15 +2084,36 @@ namespace ForeSpark.Migrations
 
             modelBuilder.Entity("ForeSpark.Processed.Processed", b =>
                 {
+                    b.HasOne("ForeSpark.Authorization.Users.User", "CreatorUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorUserId");
+
+                    b.HasOne("ForeSpark.Authorization.Users.User", "DeleterUser")
+                        .WithMany()
+                        .HasForeignKey("DeleterUserId");
+
+                    b.HasOne("ForeSpark.Authorization.Users.User", "LastModifierUser")
+                        .WithMany()
+                        .HasForeignKey("LastModifierUserId");
+
+                    b.HasOne("ForeSpark.Request.Request", "Request")
+                        .WithMany()
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ForeSpark.ProcessedMetadata.ProcessedMetadata", b =>
+                {
                     b.HasOne("ForeSpark.Installations.Installations", "Installations")
                         .WithMany()
                         .HasForeignKey("InstallationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ForeSpark.Request.Request", "Request")
-                        .WithMany()
-                        .HasForeignKey("RequestId")
+                    b.HasOne("ForeSpark.Processed.Processed", "Processed")
+                        .WithMany("ProcessedMetadata")
+                        .HasForeignKey("ProcessedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -26,6 +26,7 @@ export abstract class AppComponentBase {
     appSession: AppSessionService;
     elementRef: ElementRef;
     requestImageUrl = `${AppConsts.remoteServiceBaseUrl}/api/Request/GetImage/`;
+    processedImageUrl = `${AppConsts.remoteServiceBaseUrl}/api/Processed/GetImage/`;
 
     constructor(injector: Injector) {
         this.localization = injector.get(LocalizationService);

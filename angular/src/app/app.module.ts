@@ -49,6 +49,8 @@ import { CreateInstallationComponent } from './installations/create-installation
 import { EditInstallationComponent } from './installations/edit-installation/edit-installation.component';
 import { ViewInMapComponent } from './installations/view-in-map/view-in-map.component';
 import { ProcessedComponent } from './processed/processed.component';
+import { ProcessedMapviewComponent } from './processed/processed-mapview/processed-mapview.component';
+import { LightboxModule } from 'ngx-lightbox';
 
 @NgModule({
   declarations: [
@@ -88,7 +90,8 @@ import { ProcessedComponent } from './processed/processed.component';
     CreateInstallationComponent,
     EditInstallationComponent,
     ViewInMapComponent,
-    ProcessedComponent
+    ProcessedComponent,
+    ProcessedMapviewComponent
   ],
   imports: [
     AgmCoreModule.forRoot({
@@ -107,6 +110,7 @@ import { ProcessedComponent } from './processed/processed.component';
     ServiceProxyModule,
     SharedModule,
     NgxPaginationModule,
+    LightboxModule
   ],
   providers: [],
   entryComponents: [

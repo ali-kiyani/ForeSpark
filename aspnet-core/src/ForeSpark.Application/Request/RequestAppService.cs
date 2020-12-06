@@ -30,7 +30,7 @@ namespace ForeSpark.Request
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.CNIC.Contains(input.Keyword) || x.Name.Contains(input.Keyword) || x.Address.Contains(input.Keyword))
                 .WhereIf(!input.Status.IsNullOrWhiteSpace(), x => x.StatusId == (int)Enum.Parse(typeof(RequestStatusEnum), input.Status.ToUpper()))
                 .WhereIf(input.CityId.HasValue, x => x.CityId == input.CityId);
-            var pagedRequests = allRequests.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
+            var pagedRequests = allRequests.Skip(input.SkipCount).Take(input.MaxResultCount).OrderByDescending(x => x.Id).ToList();
             return Task.FromResult(new PagedResultDto<RequestDto>(allRequests.Count(), ObjectMapper.Map<List<RequestDto>>(pagedRequests)));
         }
 

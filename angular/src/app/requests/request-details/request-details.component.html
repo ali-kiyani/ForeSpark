@@ -9,7 +9,7 @@
                 <div class="row" *ngIf="loaded==true">
                   <div class="col-md-4" *ngFor="let image of requestDetails.images">
                     <div class="thumbnail">
-                      <a [href]="image" target="_blank">
+                      <a>
                         <img src="{{requestImageUrl+request.id+'/'+image}}" alt="Lights" class="img-rounded set-img">
                       </a>
                     </div>

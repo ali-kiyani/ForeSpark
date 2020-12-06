@@ -662,6 +662,63 @@ export class InstallationsServiceProxy {
     }
 
     /**
+     * @param installationId (optional) 
+     * @param status (optional) 
+     * @return Success
+     */
+    changeStatus(installationId: number | undefined, status: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Installations/ChangeStatus?";
+        if (installationId === null)
+            throw new Error("The parameter 'installationId' cannot be null.");
+        else if (installationId !== undefined)
+            url_ += "installationId=" + encodeURIComponent("" + installationId) + "&";
+        if (status === null)
+            throw new Error("The parameter 'status' cannot be null.");
+        else if (status !== undefined)
+            url_ += "status=" + encodeURIComponent("" + status) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processChangeStatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processChangeStatus(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processChangeStatus(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -905,15 +962,68 @@ export class ProcessedServiceProxy {
     }
 
     /**
-     * @param requestId (optional) 
      * @return Success
      */
-    getProcessedMetadata(requestId: number | undefined): Observable<ProcessedMetadataDtoListResultDto> {
+    getImage(requestId: number, processedImageName: string | null): Observable<void> {
+        let url_ = this.baseUrl + "/api/Processed/GetImage/{requestId}/{processedImageName}";
+        if (requestId === undefined || requestId === null)
+            throw new Error("The parameter 'requestId' must be defined.");
+        url_ = url_.replace("{requestId}", encodeURIComponent("" + requestId));
+        if (processedImageName === undefined || processedImageName === null)
+            throw new Error("The parameter 'processedImageName' must be defined.");
+        url_ = url_.replace("{processedImageName}", encodeURIComponent("" + processedImageName));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetImage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetImage(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetImage(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getProcessedMetadata(id: number | undefined): Observable<ProcessedMetadata> {
         let url_ = this.baseUrl + "/api/services/app/Processed/GetProcessedMetadata?";
-        if (requestId === null)
-            throw new Error("The parameter 'requestId' cannot be null.");
-        else if (requestId !== undefined)
-            url_ += "requestId=" + encodeURIComponent("" + requestId) + "&";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -931,14 +1041,14 @@ export class ProcessedServiceProxy {
                 try {
                     return this.processGetProcessedMetadata(<any>response_);
                 } catch (e) {
-                    return <Observable<ProcessedMetadataDtoListResultDto>><any>_observableThrow(e);
+                    return <Observable<ProcessedMetadata>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ProcessedMetadataDtoListResultDto>><any>_observableThrow(response_);
+                return <Observable<ProcessedMetadata>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetProcessedMetadata(response: HttpResponseBase): Observable<ProcessedMetadataDtoListResultDto> {
+    protected processGetProcessedMetadata(response: HttpResponseBase): Observable<ProcessedMetadata> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -949,7 +1059,7 @@ export class ProcessedServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProcessedMetadataDtoListResultDto.fromJS(resultData200);
+            result200 = ProcessedMetadata.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -957,7 +1067,7 @@ export class ProcessedServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ProcessedMetadataDtoListResultDto>(<any>null);
+        return _observableOf<ProcessedMetadata>(<any>null);
     }
 
     /**
@@ -4214,108 +4324,6 @@ export interface IInstallationsDtoListResultDto {
     items: InstallationsDto[] | undefined;
 }
 
-export class ProcessedMetadataDto implements IProcessedMetadataDto {
-    processedId: number;
-    inVisionTime: moment.Moment;
-    fileName: string | undefined;
-
-    constructor(data?: IProcessedMetadataDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.processedId = _data["processedId"];
-            this.inVisionTime = _data["inVisionTime"] ? moment(_data["inVisionTime"].toString()) : <any>undefined;
-            this.fileName = _data["fileName"];
-        }
-    }
-
-    static fromJS(data: any): ProcessedMetadataDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProcessedMetadataDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["processedId"] = this.processedId;
-        data["inVisionTime"] = this.inVisionTime ? this.inVisionTime.toISOString() : <any>undefined;
-        data["fileName"] = this.fileName;
-        return data; 
-    }
-
-    clone(): ProcessedMetadataDto {
-        const json = this.toJSON();
-        let result = new ProcessedMetadataDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IProcessedMetadataDto {
-    processedId: number;
-    inVisionTime: moment.Moment;
-    fileName: string | undefined;
-}
-
-export class ProcessedMetadataDtoListResultDto implements IProcessedMetadataDtoListResultDto {
-    items: ProcessedMetadataDto[] | undefined;
-
-    constructor(data?: IProcessedMetadataDtoListResultDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items.push(ProcessedMetadataDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): ProcessedMetadataDtoListResultDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProcessedMetadataDtoListResultDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): ProcessedMetadataDtoListResultDto {
-        const json = this.toJSON();
-        let result = new ProcessedMetadataDtoListResultDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IProcessedMetadataDtoListResultDto {
-    items: ProcessedMetadataDto[] | undefined;
-}
-
 export class RequestStatusDto implements IRequestStatusDto {
     status: string | undefined;
     id: number;
@@ -4438,9 +4446,114 @@ export interface IRequestDto {
     id: number;
 }
 
+export class ProcessedDetailsDto implements IProcessedDetailsDto {
+    installations: InstallationsDto;
+    inVisionTime: moment.Moment;
+    fileName: string | undefined;
+
+    constructor(data?: IProcessedDetailsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.installations = _data["installations"] ? InstallationsDto.fromJS(_data["installations"]) : <any>undefined;
+            this.inVisionTime = _data["inVisionTime"] ? moment(_data["inVisionTime"].toString()) : <any>undefined;
+            this.fileName = _data["fileName"];
+        }
+    }
+
+    static fromJS(data: any): ProcessedDetailsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProcessedDetailsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["installations"] = this.installations ? this.installations.toJSON() : <any>undefined;
+        data["inVisionTime"] = this.inVisionTime ? this.inVisionTime.toISOString() : <any>undefined;
+        data["fileName"] = this.fileName;
+        return data; 
+    }
+
+    clone(): ProcessedDetailsDto {
+        const json = this.toJSON();
+        let result = new ProcessedDetailsDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IProcessedDetailsDto {
+    installations: InstallationsDto;
+    inVisionTime: moment.Moment;
+    fileName: string | undefined;
+}
+
+export class ProcessedMetadata implements IProcessedMetadata {
+    request: RequestDto;
+    processedDetails: ProcessedDetailsDto[] | undefined;
+
+    constructor(data?: IProcessedMetadata) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.request = _data["request"] ? RequestDto.fromJS(_data["request"]) : <any>undefined;
+            if (Array.isArray(_data["processedDetails"])) {
+                this.processedDetails = [] as any;
+                for (let item of _data["processedDetails"])
+                    this.processedDetails.push(ProcessedDetailsDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ProcessedMetadata {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProcessedMetadata();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["request"] = this.request ? this.request.toJSON() : <any>undefined;
+        if (Array.isArray(this.processedDetails)) {
+            data["processedDetails"] = [];
+            for (let item of this.processedDetails)
+                data["processedDetails"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): ProcessedMetadata {
+        const json = this.toJSON();
+        let result = new ProcessedMetadata();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IProcessedMetadata {
+    request: RequestDto;
+    processedDetails: ProcessedDetailsDto[] | undefined;
+}
+
 export class ProcessedDto implements IProcessedDto {
     request: RequestDto;
-    installations: InstallationsDto;
     id: number;
 
     constructor(data?: IProcessedDto) {
@@ -4455,7 +4568,6 @@ export class ProcessedDto implements IProcessedDto {
     init(_data?: any) {
         if (_data) {
             this.request = _data["request"] ? RequestDto.fromJS(_data["request"]) : <any>undefined;
-            this.installations = _data["installations"] ? InstallationsDto.fromJS(_data["installations"]) : <any>undefined;
             this.id = _data["id"];
         }
     }
@@ -4470,7 +4582,6 @@ export class ProcessedDto implements IProcessedDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["request"] = this.request ? this.request.toJSON() : <any>undefined;
-        data["installations"] = this.installations ? this.installations.toJSON() : <any>undefined;
         data["id"] = this.id;
         return data; 
     }
@@ -4485,7 +4596,6 @@ export class ProcessedDto implements IProcessedDto {
 
 export interface IProcessedDto {
     request: RequestDto;
-    installations: InstallationsDto;
     id: number;
 }
 

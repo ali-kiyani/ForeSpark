@@ -65,13 +65,13 @@
                 <td>{{ request.lat }}</td>
                 <td>{{ request.lng }}</td>
                 <td>
-                  <span class="badge badge-info mx-1" *ngIf="request.status.id == 1">
+                  <span class="badge badge-info mx-1" *ngIf="request.status.id == 4">
                     {{ request.status.status }}
                   </span>
-                  <span class="badge badge-success mx-1" *ngIf="request.status.id == 2">
+                  <span class="badge badge-success mx-1" *ngIf="request.status.id == 3">
                     {{ request.status.status }}
                   </span>
-                  <span class="badge badge-danger mx-1" *ngIf="request.status.id == 3">
+                  <span class="badge badge-danger mx-1" *ngIf="request.status.id == 2">
                     {{ request.status.status }}
                   </span>
                 <td>

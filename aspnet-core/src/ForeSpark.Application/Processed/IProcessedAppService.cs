@@ -10,6 +10,6 @@ namespace ForeSpark.Processed
 {
     public interface IProcessedAppService : IAsyncCrudAppService<ProcessedDto, int, PagedProcessedResultRequestDto, ProcessedDto, ProcessedDto>
     {
-        Task<ListResultDto<ProcessedMetadataDto>> GetProcessedMetadata(int requestId);
+        ProcessedMetadata GetProcessedMetadata(int id);
     }
 }

@@ -21,16 +21,14 @@ namespace ForeSpark.Controllers
     {
         private readonly IRequestAppService _requestAppService;
         private readonly string requestImagePrefix = "request_";
-        private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IConfigurationRoot _appConfiguration;
         private string ImagesFolderPath = null;
 
         public RequestController(IRequestAppService requestAppService, IWebHostEnvironment hostEnvironment)
         {
             _requestAppService = requestAppService;
-            _hostEnvironment = hostEnvironment;
             _appConfiguration = hostEnvironment.GetAppConfiguration();
-            ImagesFolderPath = Path.Combine(_appConfiguration["Paths:PhysicalPath"], _appConfiguration["Paths:requestsImagesFolder"]);
+            ImagesFolderPath = Path.Combine(_appConfiguration["Paths:PhysicalPath"], _appConfiguration["Paths:RequestsImagesFolder"]);
             Directory.CreateDirectory(ImagesFolderPath);
         }
 

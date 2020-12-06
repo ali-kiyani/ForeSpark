@@ -1,4 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
 import { PagedListingComponentBase, PagedRequestDto } from '@shared/paged-listing-component-base';
 import { CitiesDto, InstallationsServiceProxy, ProcessedDto, ProcessedDtoPagedResultDto, ProcessedServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -11,17 +13,18 @@ class PagedRProcessedRequestDto extends PagedRequestDto {
 @Component({
   selector: 'app-processed',
   templateUrl: './processed.component.html',
-  styleUrls: ['./processed.component.css']
+  styleUrls: ['./processed.component.css'],
+  animations: [appModuleAnimation()]
 })
 export class ProcessedComponent extends PagedListingComponentBase<ProcessedDto> implements OnInit {
 
   keyword = '';
   cities: CitiesDto[] = [];
   reports: ProcessedDto[] = [];
-  selectedCity = 0;
+  selectedCity = 1;
 
   constructor(injector: Injector, private _processedService: ProcessedServiceProxy, 
-    private __installationService: InstallationsServiceProxy) {
+    private __installationService: InstallationsServiceProxy, private router: Router) {
     super(injector);
    }
 
@@ -32,7 +35,10 @@ export class ProcessedComponent extends PagedListingComponentBase<ProcessedDto> 
   }
 
   viewOnMap(report: ProcessedDto) {
-
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/app/reports/' + report.request.id])
+    );
+    window.open(url, '_blank');
   }
 
   listCityChange() {

@@ -57,7 +57,7 @@
                   <td>{{ report.request.cnic }}</td>
                   <td>{{ report.request.name }}</td>
                   <td>
-                    <span class="badge badge-success mx-1" *ngIf="report.status.id == 2">
+                    <span class="badge badge-success mx-1">
                       PROCESSED
                     </span>
                   <td>
@@ -74,7 +74,7 @@
                       <!--Menu-->
                       <div class="dropdown-menu dropdown-primary">
                         <a class="dropdown-item" (click)="viewOnMap(report)"><i
-                            class="fa fa-check"></i>&nbsp;&nbsp;{{"ViewOnMap" | localize}}</a>
+                            class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{"ViewOnMap" | localize}}</a>
                       </div>
                     </div>
                     <!-- <button
