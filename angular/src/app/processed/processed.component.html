@@ -39,6 +39,8 @@
                   <th>{{ "CNIC" | localize }}</th>
                   <th>{{ "Name" | localize }}</th>
                   <th>{{ "Status" | localize }}</th>
+                  <th>{{ "StartTime" | localize }}</th>
+                  <th>{{ "EndTime" | localize }}</th>
                   <th>{{ "Actions" | localize }}</th>
                 </tr>
               </thead>
@@ -60,23 +62,14 @@
                     <span class="badge badge-success mx-1">
                       PROCESSED
                     </span>
+                  </td>
+                  <td>{{ report.request.startTime | date: 'dd/MM/yyyy hh:mm a'}}</td>
+                  <td>{{ report.request.endTime | date: 'dd/MM/yyyy hh:mm a' }}</td>
                   <td>
                     <!-- <i class="fa fa-check" aria-hidden="true"></i> &nbsp; &nbsp;
                       <i class="fa fa-times" aria-hidden="true"></i> &nbsp; &nbsp; -->
-                    <div class="dropdown">
-  
-                      <!--Trigger-->
-  
-                      <a type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-  
-  
-                      <!--Menu-->
-                      <div class="dropdown-menu dropdown-primary">
-                        <a class="dropdown-item" (click)="viewOnMap(report)"><i
-                            class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{"ViewOnMap" | localize}}</a>
-                      </div>
-                    </div>
+                      <a href="javascript:;" (click)="viewOnMap(report)"><i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{"ViewOnMap" | localize}}</a>
+
                     <!-- <button
                         type="button"
                         class="btn btn-sm bg-secondary"

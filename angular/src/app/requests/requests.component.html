@@ -43,8 +43,8 @@
               <tr>
                 <th>{{ "CNIC" | localize }}</th>
                 <th>{{ "Name" | localize }}</th>
-                <th>{{ "Lat" | localize }}</th>
-                <th>{{ "Lng" | localize }}</th>
+                <th>{{ "StartTime" | localize }}</th>
+                <th>{{ "EndTime" | localize }}</th>
                 <th>{{ "Status" | localize }}</th>
                 <th>{{ "Actions" | localize }}</th>
               </tr>
@@ -62,8 +62,8 @@
                   ">
                 <td>{{ request.cnic }}</td>
                 <td>{{ request.name }}</td>
-                <td>{{ request.lat }}</td>
-                <td>{{ request.lng }}</td>
+                <td>{{ request.startTime | date: 'dd/MM/yyyy hh:mm a'}}</td>
+                <td>{{ request.endTime | date: 'dd/MM/yyyy hh:mm a' }}</td>
                 <td>
                   <span class="badge badge-info mx-1" *ngIf="request.status.id == 4">
                     {{ request.status.status }}

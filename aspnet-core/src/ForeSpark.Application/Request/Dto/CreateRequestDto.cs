@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ForeSpark.Request.Dto
 {
@@ -12,6 +13,8 @@ namespace ForeSpark.Request.Dto
         public string Description { get; set; }
         public double? Lat { get; set; }
         public double? Lng { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
         public int CityId { get; set; }
     }
 }

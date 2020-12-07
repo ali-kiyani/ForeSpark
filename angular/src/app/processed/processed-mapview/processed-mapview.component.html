@@ -29,7 +29,7 @@
           <br>
           {{"Location" | localize}}:&nbsp;{{detail.installations.address}}
           <br>
-            <img class="thumbnail-1" src="{{processedImageUrl+metadata.request.id+'/'+detail.fileName}}" (click)="openImage(detail.fileName)"/>
+            <img class="thumbnail-1" src="{{processedImageUrl+metadata.request.id+'/'+detail.fileName}}" (click)="openImage(detail)"/>
         </div>
       </agm-info-window>
     </agm-marker>

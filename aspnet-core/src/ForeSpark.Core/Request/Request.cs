@@ -16,6 +16,8 @@ namespace ForeSpark.Request
         public string Description { get; set; }
         public double? Lat { get; set; }
         public double? Lng { get; set; }
+        public DateTime? StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public Cities.Cities City { get; set; }
         [ForeignKey("City")]
         public int CityId { get; set; }

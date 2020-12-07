@@ -133,6 +133,48 @@
             ></abp-validation-summary>
           </div>
         </div>
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="startTime">
+            {{ "StartTime" | localize }}
+          </label>
+          <div class="col-md-5">
+            <input
+              type="datetime-local"
+              class="form-control"
+              name="startTime"
+              id="startTime"
+              required
+              [(ngModel)]="request.startTime"
+              #startTimeModel="ngModel"
+              #startTimeEl
+            />
+            <abp-validation-summary
+              [control]="startTimeModel"
+              [controlEl]="startTimeEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="endTime">
+            {{ "EndTime" | localize }}
+          </label>
+          <div class="col-md-5">
+            <input
+              type="datetime-local"
+              class="form-control"
+              name="endTime"
+              id="endTime"
+              required
+              [(ngModel)]="request.endTime"
+              #endTimeModel="ngModel"
+              #endTimeEl
+            />
+            <abp-validation-summary
+              [control]="endTimeModel"
+              [controlEl]="endTimeEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
         <div class="form-group row mb-0">
             <label class="col-md-3 col-form-label" for="description">
               {{ "RequestDescription" | localize }}

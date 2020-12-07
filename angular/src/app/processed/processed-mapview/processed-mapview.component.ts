@@ -3,7 +3,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
-import { ProcessedMetadata, ProcessedServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ProcessedDetailsDto, ProcessedMetadata, ProcessedServiceProxy } from '@shared/service-proxies/service-proxies';
 import { Lightbox } from 'ngx-lightbox';
 
 @Component({
@@ -18,6 +18,7 @@ export class ProcessedMapviewComponent extends AppComponentBase implements OnIni
   lng = 60.3349021;
   requestId: number;
   metadata: ProcessedMetadata;
+  tempMeta: ProcessedMetadata;
   previous;
 
   constructor(injector: Injector, private _processedService: ProcessedServiceProxy,
@@ -33,6 +34,16 @@ export class ProcessedMapviewComponent extends AppComponentBase implements OnIni
       this.metadata = metadata;
       this.lat = metadata.request.lat;
       this.lng = metadata.request.lng;
+      this.tempMeta = metadata.clone();
+      this.metadata.processedDetails = [];
+      let dto: ProcessedDetailsDto;
+      for (let i = 0; i < this.tempMeta.processedDetails.length; i++) {{
+        dto = this.tempMeta.processedDetails.find(x => x.installations.id === this.tempMeta.processedDetails[i].installations.id);
+        if (this.metadata.processedDetails.findIndex(y => y.installations.id === dto.installations.id) === -1) {
+          this.metadata.processedDetails.push(dto.clone());
+        }
+      }}
+      debugger;
     });
   }
 
@@ -44,12 +55,15 @@ export class ProcessedMapviewComponent extends AppComponentBase implements OnIni
     return '../../assets/img/black-pin.svg';
   }
 
-  openImage(fileName: string) {
+  openImage(detail: ProcessedDetailsDto) {
+    let tempList = this.tempMeta.processedDetails.filter(x => x.installations.id === detail.installations.id)
     const imgList = [];
-    const album = {
-      src: this.processedImageUrl + this.metadata.request.id + '/' + fileName
-    };
-    imgList.push(album);
+    for (let i = 0; i < tempList.length; i++) {
+      const album = {
+        src: this.processedImageUrl + this.metadata.request.id + '/' + tempList[i].fileName
+      };
+      imgList.push(album);
+    }
     this._lightbox.open(imgList);
   }
 

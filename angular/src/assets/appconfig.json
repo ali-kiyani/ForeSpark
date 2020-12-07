@@ -1,6 +1,6 @@
 {
   "remoteServiceBaseUrl": "http://3.140.162.29:21022",
-  "appBaseUrl": "http://3.140.162.29",
+  "appBaseUrl": "http://3.140.162.29:4200",
   "localeMappings": [
     {
       "from": "pt-BR",

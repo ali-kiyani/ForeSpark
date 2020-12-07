@@ -46,6 +46,8 @@ namespace ForeSpark.Request
                 Lat = input.Lat,
                 Lng = input.Lng,
                 CityId = input.CityId,
+                StartTime = Convert.ToDateTime(input.StartTime),
+                EndTime = Convert.ToDateTime(input.EndTime),
                 StatusId = (byte)RequestStatusEnum.PENDING
             };
 

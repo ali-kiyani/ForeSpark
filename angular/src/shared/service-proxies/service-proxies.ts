@@ -4378,6 +4378,8 @@ export class RequestDto implements IRequestDto {
     description: string | undefined;
     lat: number | undefined;
     lng: number | undefined;
+    startTime: moment.Moment | undefined;
+    endTime: moment.Moment | undefined;
     city: CitiesDto;
     status: RequestStatusDto;
     id: number;
@@ -4399,6 +4401,8 @@ export class RequestDto implements IRequestDto {
             this.description = _data["description"];
             this.lat = _data["lat"];
             this.lng = _data["lng"];
+            this.startTime = _data["startTime"] ? moment(_data["startTime"].toString()) : <any>undefined;
+            this.endTime = _data["endTime"] ? moment(_data["endTime"].toString()) : <any>undefined;
             this.city = _data["city"] ? CitiesDto.fromJS(_data["city"]) : <any>undefined;
             this.status = _data["status"] ? RequestStatusDto.fromJS(_data["status"]) : <any>undefined;
             this.id = _data["id"];
@@ -4420,6 +4424,8 @@ export class RequestDto implements IRequestDto {
         data["description"] = this.description;
         data["lat"] = this.lat;
         data["lng"] = this.lng;
+        data["startTime"] = this.startTime ? this.startTime.toISOString() : <any>undefined;
+        data["endTime"] = this.endTime ? this.endTime.toISOString() : <any>undefined;
         data["city"] = this.city ? this.city.toJSON() : <any>undefined;
         data["status"] = this.status ? this.status.toJSON() : <any>undefined;
         data["id"] = this.id;
@@ -4441,6 +4447,8 @@ export interface IRequestDto {
     description: string | undefined;
     lat: number | undefined;
     lng: number | undefined;
+    startTime: moment.Moment | undefined;
+    endTime: moment.Moment | undefined;
     city: CitiesDto;
     status: RequestStatusDto;
     id: number;
@@ -4716,6 +4724,8 @@ export class CreateRequestDto implements ICreateRequestDto {
     description: string | undefined;
     lat: number | undefined;
     lng: number | undefined;
+    startTime: string | undefined;
+    endTime: string | undefined;
     cityId: number;
 
     constructor(data?: ICreateRequestDto) {
@@ -4735,6 +4745,8 @@ export class CreateRequestDto implements ICreateRequestDto {
             this.description = _data["description"];
             this.lat = _data["lat"];
             this.lng = _data["lng"];
+            this.startTime = _data["startTime"];
+            this.endTime = _data["endTime"];
             this.cityId = _data["cityId"];
         }
     }
@@ -4754,6 +4766,8 @@ export class CreateRequestDto implements ICreateRequestDto {
         data["description"] = this.description;
         data["lat"] = this.lat;
         data["lng"] = this.lng;
+        data["startTime"] = this.startTime;
+        data["endTime"] = this.endTime;
         data["cityId"] = this.cityId;
         return data; 
     }
@@ -4773,6 +4787,8 @@ export interface ICreateRequestDto {
     description: string | undefined;
     lat: number | undefined;
     lng: number | undefined;
+    startTime: string | undefined;
+    endTime: string | undefined;
     cityId: number;
 }
 

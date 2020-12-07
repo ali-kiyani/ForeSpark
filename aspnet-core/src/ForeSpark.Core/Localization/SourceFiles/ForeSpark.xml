@@ -158,5 +158,7 @@
     <text name="Activate">Activate</text>
     <text name="Deactivate">Deactivate</text>
     <text name="Malfunction">Malfunction</text>
+    <text name="StartTime">Start Time</text>
+    <text name="EndTime">End Time</text>
   </texts>
 </localizationDictionary>
