@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 
 namespace ForeSpark.Request
 {
@@ -16,11 +17,13 @@ namespace ForeSpark.Request
     {
         private readonly IRepository<Request> _requestRepository;
         private readonly IRepository<RequestImages> _requestImages;
+        private readonly IHttpClientFactory _clientFactory;
         public RequestAppService(IRepository<Request> requestRepository, 
-            IRepository<RequestImages> requestImages) : base(requestRepository)
+            IRepository<RequestImages> requestImages, IHttpClientFactory clientFactory) : base(requestRepository)
         {
             _requestRepository = requestRepository;
             _requestImages = requestImages;
+            _clientFactory = clientFactory;
         }
 
         public override Task<PagedResultDto<RequestDto>> GetAllAsync(PagedRequestResultRequestDto input)
@@ -87,6 +90,13 @@ namespace ForeSpark.Request
             CheckUpdatePermission();
             var request = await _requestRepository.GetAsync(requestId);
             request.StatusId = (int)RequestStatusEnum.APPROVED;
+
+            string uri = "http://3.140.162.29:5000/api?case=" + request.Id + "&lat=" + request.Lat
+                + "&lon=" + request.Lng + "&start=" + ConvertDateTimeToString(request.StartTime.Value) + "&end=" + ConvertDateTimeToString(request.EndTime.Value);
+            var visionRequest = new HttpRequestMessage(HttpMethod.Get, uri);
+            var client = _clientFactory.CreateClient();
+
+            client.SendAsync(visionRequest);
             await _requestRepository.UpdateAsync(request);
             return true;
         }
@@ -109,6 +119,11 @@ namespace ForeSpark.Request
         protected override IQueryable<Request> ApplySorting(IQueryable<Request> query, PagedRequestResultRequestDto input)
         {
             return query.OrderByDescending(order => order.CreationTime);
+        }
+
+        private string ConvertDateTimeToString(DateTime dateTime)
+        {
+            return String.Format("{0:dd-MM-yyyy_HH:mm}", dateTime);
         }
     }
 }
