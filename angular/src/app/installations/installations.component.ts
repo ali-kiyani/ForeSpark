@@ -26,10 +26,10 @@ export class InstallationsComponent extends PagedListingComponentBase<Installati
   keyword = '';
   status: string;
   cities: CitiesDto[] = [];
-  selectedCity = 1;
+  selectedCity = 0;
   tabClick = new EventEmitter<any>();
-  lat = 30.0497935;
-  lng = 60.3349021;
+  lat = 33.687452;
+  lng = 73.015991;
 
   constructor(injector: Injector, private _modalService: BsModalService, private _installationService: InstallationsServiceProxy) {
     super(injector);
@@ -50,6 +50,7 @@ export class InstallationsComponent extends PagedListingComponentBase<Installati
   }
 
   installationsForCity() {
+    debugger;
     this._installationService.getInstallationsForCity(this.selectedCity).subscribe(installations => {
       this.installations = installations.items;
       if (this.installations.length > 0) {

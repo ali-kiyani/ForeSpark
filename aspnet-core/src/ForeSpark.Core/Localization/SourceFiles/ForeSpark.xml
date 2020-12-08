@@ -160,5 +160,6 @@
     <text name="Malfunction">Malfunction</text>
     <text name="StartTime">Start Time</text>
     <text name="EndTime">End Time</text>
+    <text name="RequestAutoApproveWarning">Do you want to auto approve your request?</text>
   </texts>
 </localizationDictionary>

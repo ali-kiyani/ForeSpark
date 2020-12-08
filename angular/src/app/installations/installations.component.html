@@ -11,6 +11,7 @@
               <div class="row">
                 <div class="col-10 text-right">
                   <select class="form-control" name="city" (change)="listCityChange()" [(ngModel)]="selectedCity">
+                    <option [value]="0">--All Cities Selected--</option>
                     <option *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
                   </select>
                 </div>
@@ -45,10 +46,9 @@
                   <tr>
                     <th>{{ "Make" | localize }}</th>
                     <th>{{ "Serial" | localize }}</th>
-                    <th>{{ "City" | localize }}</th>
-                    <th>{{ "Lat" | localize }}</th>
-                    <th>{{ "Lng" | localize }}</th>
                     <th>{{ "Status" | localize }}</th>
+                    <th>{{ "City" | localize }}</th>
+                    <th></th>
                     <th>{{ "Actions" | localize }}</th>
                   </tr>
                 </thead>
@@ -65,9 +65,6 @@
                         ">
                     <td>{{ installation.make }}</td>
                     <td>{{ installation.serial }}</td>
-                    <td>{{ installation.city.name }}</td>
-                    <td>{{ installation.lat }}</td>
-                    <td>{{ installation.lng }}</td>
                     <td>
                       <span class="badge badge-success mx-1" *ngIf="installation.status == 1">
                         {{ "ACTIVE" | localize }}
@@ -79,18 +76,19 @@
                         {{ "MALFUNCTION" | localize }}
                       </span>
                     </td>
-                    <td>
-                      <!-- <i class="fa fa-check" aria-hidden="true"></i> &nbsp; &nbsp;
-                          <i class="fa fa-times" aria-hidden="true"></i> &nbsp; &nbsp; -->
-                      <div class="dropdown">
+                    <td>{{ installation.city.name }}</td>
 
-                        <!--Trigger-->
+                    <td>
+                      <a href="javascript:;" (click)="viewInMap(installation)"><i
+                        class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{"ViewInMap" | localize}}</a>
+                    </td>
+
+                    <td>
+                     <!-- <div class="dropdown">
 
                         <a type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
                           aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
 
-
-                        <!--Menu-->
                         <div class="dropdown-menu dropdown-primary">
                           <a class="dropdown-item" (click)="viewInMap(installation)"><i
                               class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{"ViewInMap" | localize}}</a>
@@ -100,26 +98,32 @@
                                 class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{"Deactivate" | localize}}</a>
                               <a class="dropdown-item" (click)="changeStatus(installation, 3)"><i
                                 class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{"Malfunction" | localize}}</a>
-                          <!-- <a class="dropdown-item" (click)="editInstallation(installation)"><i class="fas fa-pencil-alt"></i>&nbsp;&nbsp;{{"Edit" | localize}}</a>
-                              <a class="dropdown-item" (click)="delete(installation)"><i class="fas fa-trash"></i>&nbsp;&nbsp;{{"Delete" | localize}}</a> -->
-                        </div>
-                      </div>
-                      <!-- <button
+                          </div>
+                      </div>-->
+                       <button *ngIf="installation.status != 1"
                             type="button"
-                            class="btn btn-sm bg-secondary"
-                            (click)="editInstallation(installation)"
+                            class="btn btn-sm bg-success"
+                            (click)="changeStatus(installation, 1)"
                           >
                             <i class="fas fa-pencil-alt"></i>
-                            {{ "Edit" | localize }}
+                            {{ "Activate" | localize }}
                           </button>
-                          <button
+                          <button *ngIf="installation.status == 1"
                             type="button"
-                            class="btn btn-sm bg-danger mx-2"
-                            (click)="delete(installation)"
+                            class="btn btn-sm bg-warning mx-2"
+                            (click)="changeStatus(installation, 2)"
                           >
                             <i class="fas fa-trash"></i>
-                            {{ "Delete" | localize }}
-                          </button>-->
+                            {{ "Deactivate" | localize }}
+                          </button>
+                          <button *ngIf="installation.status != 3"
+                          type="button"
+                          class="btn btn-sm bg-danger mx-2"
+                          (click)="changeStatus(installation, 3)"
+                        >
+                          <i class="fas fa-trash"></i>
+                          {{ "Malfunction" | localize }}
+                        </button>
                     </td>
                   </tr>
                 </tbody>
@@ -163,6 +167,7 @@
             <div class="row">
               <div class="col-10 text-right">
                 <select class="form-control" name="city" (change)="mapCityChange()" [(ngModel)]="selectedCity">
+                  <option [value]="0">--All Cities Selected--</option>
                   <option *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
                 </select>
               </div>
@@ -177,7 +182,7 @@
         </div>
       </div>
     </section>
-    <agm-map [latitude]="lat" [longitude]="lng">
+    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="12">
       <agm-marker *ngFor="let installation of installations" 
       [latitude]="installation.lat" 
       [longitude]="installation.lng" 

@@ -130,7 +130,7 @@
           </div>
         </div>
       </div>
-        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="8">
+        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="10">
           <agm-circle *ngFor="let city of homeDto.insightHome" [latitude]="city.city.lat" [longitude]="city.city.lng"
             [radius]="city.requestsCount" [fillColor]="'red'" (mouseOut)="infoWindow.close();">
           </agm-circle>

@@ -65,25 +65,25 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
       new MenuItem(
         this.l('Requests'),
         '',
-        'fab fa-product-hunt',
+        'fa fa-paper-plane',
         'Pages.Requests',
         [
           new MenuItem(
             this.l('Pending'),
             '/app/requests/pending',
-            'fab fa-product-hunt',
+            '',
             'Pages.Requests'
           ),
           new MenuItem(
             this.l('Approved'),
             '/app/requests/approved',
-            'fab fa-product-hunt',
+            '',
             'Pages.Requests'
           ),
           new MenuItem(
             this.l('Declined'),
             '/app/requests/declined',
-            'fab fa-product-hunt',
+            '',
             'Pages.Requests'
           )
         ]

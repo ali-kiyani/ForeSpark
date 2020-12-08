@@ -15,7 +15,7 @@ export class CreateInstallationComponent extends AppComponentBase implements OnI
   saving = false;
   installation = new CreateInstallationsDto();
   cities: CitiesDto[] = [];
-  isActive = false;
+  isActive = true;
   selectedCity = new CitiesDto();
 
   @Output() onSave = new EventEmitter<any>();
@@ -28,6 +28,13 @@ export class CreateInstallationComponent extends AppComponentBase implements OnI
       this.installation.cityId = 0;
       this.selectedCity.lat = 33.6845867;
       this.selectedCity.lng = 73.0304453;
+      this.installation.make = 'SafeTech';
+      this.installation.serial = 'ST12345';
+      this.installation.status = 1;
+      this.installation.cityId = 5;
+      this.installation.address = 'Street 4, G-10/2';
+      this.installation.lat = 33.673637775122494;
+      this.installation.lng = 73.00615521516114;
     }
 
   ngOnInit(): void {

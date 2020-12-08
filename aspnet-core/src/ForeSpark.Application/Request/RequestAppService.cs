@@ -29,10 +29,10 @@ namespace ForeSpark.Request
         public override Task<PagedResultDto<RequestDto>> GetAllAsync(PagedRequestResultRequestDto input)
         {
             CheckGetAllPermission();
-            var allRequests = _requestRepository.GetAllIncluding(x => x.Status)
+            var allRequests = _requestRepository.GetAllIncluding(x => x.Status).Include(x => x.City)
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.CNIC.Contains(input.Keyword) || x.Name.Contains(input.Keyword) || x.Address.Contains(input.Keyword))
                 .WhereIf(!input.Status.IsNullOrWhiteSpace(), x => x.StatusId == (int)Enum.Parse(typeof(RequestStatusEnum), input.Status.ToUpper()))
-                .WhereIf(input.CityId.HasValue, x => x.CityId == input.CityId);
+                .WhereIf(input.CityId.HasValue && input.CityId.Value != 0, x => x.CityId == input.CityId);
             var pagedRequests = allRequests.Skip(input.SkipCount).Take(input.MaxResultCount).OrderByDescending(x => x.Id).ToList();
             return Task.FromResult(new PagedResultDto<RequestDto>(allRequests.Count(), ObjectMapper.Map<List<RequestDto>>(pagedRequests)));
         }

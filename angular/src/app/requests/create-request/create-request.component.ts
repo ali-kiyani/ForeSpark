@@ -37,6 +37,15 @@ implements OnInit {
     this._installationService.getAllCities().subscribe(result => {
       this.cities = result.items;
     });
+    this.request.cityId = 5;
+    this.request.address = 'Street 24, G-10/2';
+    this.request.cnic = '3740523488597';
+    this.request.description = 'My son is missing for last 2 hours from Street 24, G-10/2';
+    this.request.name = 'Muhammad Ali';
+    this.request.lat = 33.67257445223191;
+    this.request.lng = 33.67257445223191;
+    this.request.startTime = '2020-11-20T18:50';
+    this.request.endTime = '2020-11-20T19:12';
   }
 
   cityChanged(value: number) {
@@ -44,6 +53,7 @@ implements OnInit {
   }
 
   save() {
+    debugger;
     this.saving = true;
     const formData = new FormData();
     formData.append('requestForm', JSON.stringify(this.request));
@@ -58,10 +68,26 @@ implements OnInit {
           this.saving = false;
         })
       )
-      .subscribe(() => {
+      .subscribe((newRequest) => {
         this.notify.info(this.l('SavedSuccessfully'));
         this.bsModalRef.hide();
         this.onSave.emit();
+        abp.message.confirm(
+          this.l('RequestAutoApproveWarning'),
+          undefined,
+          (result: boolean) => {
+            if (result) {
+              this._requestService
+                .approveRequest(newRequest.id)
+                .pipe(
+                  finalize(() => {
+                    abp.notify.success(this.l('ApprovedSuccessfully'));
+                  })
+                )
+                .subscribe(() => { });
+            }
+          }
+        );
       });
   }
 

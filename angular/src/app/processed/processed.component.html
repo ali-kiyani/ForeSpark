@@ -9,6 +9,7 @@
             <div class="row">
               <div class="col-10 text-right">
                 <select class="form-control" name="city" (change)="listCityChange()" [(ngModel)]="selectedCity">
+                  <option [value]="0">--All Cities Selected--</option>
                   <option *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
                 </select>
               </div>
@@ -41,7 +42,7 @@
                   <th>{{ "Status" | localize }}</th>
                   <th>{{ "StartTime" | localize }}</th>
                   <th>{{ "EndTime" | localize }}</th>
-                  <th>{{ "Actions" | localize }}</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>

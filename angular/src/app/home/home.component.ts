@@ -12,8 +12,8 @@ import { HomeDto, HomeServiceProxy, InstallationsHomeDto, RequestsHomeDto, Reque
 export class HomeComponent extends AppComponentBase implements OnInit {
 
   homeDto = new HomeDto();
-  lat = 30.0497935;
-  lng = 60.3349021;
+  lat = 33.687452;
+  lng = 73.015991;
   loaded = false;
 
   constructor(injector: Injector, private _homeService: HomeServiceProxy) {
@@ -25,7 +25,10 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     this._homeService.getHomeMetaData().subscribe(result => {
       this.homeDto = result;
       this.homeDto.insightHome.forEach(x => {
-        x.requestsCount *= 8000;
+        x.requestsCount *= 100;
+        if (x.requestsCount > 5000) {
+          x.requestsCount = 5000;
+        }
       });
       this.loaded = true;
     });

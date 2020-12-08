@@ -21,11 +21,12 @@ export class ProcessedComponent extends PagedListingComponentBase<ProcessedDto> 
   keyword = '';
   cities: CitiesDto[] = [];
   reports: ProcessedDto[] = [];
-  selectedCity = 1;
+  selectedCity = 0;
 
   constructor(injector: Injector, private _processedService: ProcessedServiceProxy, 
     private __installationService: InstallationsServiceProxy, private router: Router) {
     super(injector);
+    this.refresh();
    }
 
   ngOnInit(): void {

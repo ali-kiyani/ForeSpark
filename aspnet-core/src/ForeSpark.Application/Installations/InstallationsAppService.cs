@@ -53,7 +53,7 @@ namespace ForeSpark.Installations
             CheckGetAllPermission();
             var allInstallations = _installationsRepository.GetAllIncluding(x => x.City)
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Address.Contains(input.Keyword) || x.Make.Contains(input.Keyword) || x.Serial.Contains(input.Keyword))
-                .WhereIf(input.CityId.HasValue, x => x.CityId == input.CityId);
+                .WhereIf(input.CityId.HasValue && input.CityId.Value != 0, x => x.CityId == input.CityId);
             var pagedRequests = allInstallations.Skip(input.SkipCount).Take(input.MaxResultCount).OrderByDescending(x => x.Id).ToList();
             return await Task.FromResult(new PagedResultDto<InstallationsDto>(allInstallations.Count(), ObjectMapper.Map<List<InstallationsDto>>(pagedRequests)));
         }
@@ -79,6 +79,10 @@ namespace ForeSpark.Installations
         public ListResultDto<InstallationsDto> GetInstallationsForCity(int cityId)
         {
             CheckGetAllPermission();
+            if (cityId == 0)
+            {
+                return new ListResultDto<InstallationsDto>(ObjectMapper.Map<List<InstallationsDto>>(_installationsRepository.GetAllIncluding(x => x.City)).ToList());
+            }
             return new ListResultDto<InstallationsDto>(ObjectMapper.Map<List<InstallationsDto>>(_installationsRepository.GetAllIncluding(x => x.City).Where(x => x.CityId == cityId)).ToList());
         }
 

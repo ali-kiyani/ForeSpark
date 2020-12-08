@@ -35,11 +35,11 @@ namespace ForeSpark.Processed
         public override Task<PagedResultDto<ProcessedDto>> GetAllAsync(PagedProcessedResultRequestDto input)
         {
             CheckGetAllPermission();
-            var allProcessed = _processedRepository.GetAllIncluding(x => x.Request)
+            var allProcessed = _processedRepository.GetAll().Include(x => x.Request).ThenInclude(x => x.City)
                                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.RequestId.ToString().Contains(input.Keyword)
                 || x.Request.Name.Contains(input.Keyword) || x.Request.Address.Contains(input.Keyword)
                 || x.Request.Address.Contains(input.Keyword) || x.Request.CNIC.Contains(input.Keyword))
-                .WhereIf(input.CityId.HasValue, x => x.Request.CityId == input.CityId).ToList().Distinct(new ProcessedComparer());
+                .WhereIf(input.CityId.HasValue && input.CityId.Value != 0, x => x.Request.CityId == input.CityId).ToList().Distinct(new ProcessedComparer());
             var pagedProcessed = allProcessed.Skip(input.SkipCount).Take(input.MaxResultCount).OrderByDescending(x => x.Id).ToList();
             return Task.FromResult(new PagedResultDto<ProcessedDto>(allProcessed.Count(), ObjectMapper.Map<List<ProcessedDto>>(pagedProcessed)));
         }

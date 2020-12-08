@@ -24,7 +24,7 @@ export class RequestsComponent extends PagedListingComponentBase<RequestDto> imp
   cities: CitiesDto[] = [];
   keyword = '';
   status: string;
-  selectedCity = 1;
+  selectedCity = 0;
 
   constructor(injector: Injector, private _requestService: RequestServiceProxy, private _modalService: BsModalService,
     private route: ActivatedRoute, private _installationService: InstallationsServiceProxy) {

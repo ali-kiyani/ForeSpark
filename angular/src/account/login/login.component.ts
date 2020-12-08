@@ -17,6 +17,8 @@ export class LoginComponent extends AppComponentBase {
     private _sessionService: AbpSessionService
   ) {
     super(injector);
+    this.authService.authenticateModel.userNameOrEmailAddress = 'admin';
+    this.authService.authenticateModel.password = '123qwe';
   }
 
   get multiTenancySideIsTeanant(): boolean {
