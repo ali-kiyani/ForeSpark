@@ -42,8 +42,8 @@ implements OnInit {
     this.request.cnic = '3740523488597';
     this.request.description = 'My son is missing for last 2 hours from Street 24, G-10/2';
     this.request.name = 'Muhammad Ali';
-    this.request.lat = 33.67257445223191;
-    this.request.lng = 33.67257445223191;
+    this.request.lat = 33.6740158896247;
+    this.request.lng = 73.01293583955079;
     this.request.startTime = '2020-11-20T18:50';
     this.request.endTime = '2020-11-20T19:12';
   }
